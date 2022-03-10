@@ -1,5 +1,10 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {FilterType, InitialStateTodolistType, StatusType} from '../types';
+import {
+  FilterType,
+  InitialStateTodolistType,
+  StatusType,
+  TodoListType,
+} from '../types';
 
 const TODO_LISTS = 'todolist';
 
@@ -16,8 +21,16 @@ const slice = createSlice({
   name: TODO_LISTS,
   initialState: initialStateTodolist,
   reducers: {
-    addTodoList: (state, action) => {
-      state.todoLists.push(action.payload);
+    addTodoList: (
+      state,
+      action: PayloadAction<{todoListId: string; title: string}>,
+    ) => {
+      const todoList: TodoListType = {
+        id: action.payload.todoListId,
+        title: action.payload.title,
+        filter: 'all',
+      };
+      state.todoLists.unshift(todoList);
     },
     removeTodoList: (state, action: PayloadAction<{todoListId: string}>) => {
       state.todoLists = state.todoLists.filter(
@@ -27,21 +40,24 @@ const slice = createSlice({
     updateTodoList: (
       state,
       action: PayloadAction<{
-        todoListId: string;
+        id: string;
         title?: string;
         filter?: FilterType;
       }>,
     ) => {
       state.todoLists = state.todoLists.map(todoList =>
-        todoList.id === action.payload.todoListId
+        todoList.id === action.payload.id
           ? {...todoList, ...action.payload}
           : todoList,
       );
     },
-    setStatus: (state, action: PayloadAction<{status: StatusType}>) => {
+    setStatusTodoLists: (
+      state,
+      action: PayloadAction<{status: StatusType}>,
+    ) => {
       state.status = action.payload.status;
     },
-    setMessage: (state, action: PayloadAction<{message: string}>) => {
+    setMessageTodoLists: (state, action: PayloadAction<{message: string}>) => {
       state.message = action.payload.message;
     },
   },
@@ -50,9 +66,9 @@ const slice = createSlice({
 export const todolistReducer = slice.reducer;
 
 export const {
-  setStatus,
+  setStatusTodoLists,
   addTodoList,
   updateTodoList,
   removeTodoList,
-  setMessage,
+  setMessageTodoLists,
 } = slice.actions;

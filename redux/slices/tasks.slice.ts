@@ -108,7 +108,7 @@ const slice = createSlice({
   extraReducers: builder => {
     builder.addCase(
       addTodoList,
-      (state, action: PayloadAction<{todoListId: string}>) => {
+      (state, action: PayloadAction<{todoListId: string; title: string}>) => {
         state.tasks[action.payload.todoListId] = [];
       },
     );
