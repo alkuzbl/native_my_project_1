@@ -25,6 +25,12 @@ export type InitialStateTasksType = {
   status: StatusType;
   message: string | undefined;
   tasks: {
-    [key: string]: TaskType;
+    [key: string]: TaskType[];
   };
+};
+
+export type InitialStateAppType = {
+  status: StatusType;
+  message: string | undefined;
+  isInitialized: boolean;
 };
