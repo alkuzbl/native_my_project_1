@@ -12,21 +12,29 @@ declare global {
 }
 
 export type RootStackParamList = {
-  ['Мой первый ежедневник']:
-    | NavigatorScreenParams<RootTabParamList>
-    | undefined;
+  TodoLists: NavigatorScreenParams<RootTabParamList> | undefined;
+  Tasks: {todoListId: string; title: string};
   // Modal: undefined;
   // NotFound: undefined;
 };
 
+// типизация props для Stack
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
+
+// выделенная типизация для navigation
+export type TasksScreenNavigatePropsType =
+  RootStackScreenProps<'Tasks'>['navigation'];
+
+// выделенная типизация для route
+export type TasksScreenRoutePropsType = RootStackScreenProps<'Tasks'>['route'];
 
 export type RootTabParamList = {
   Todolist: undefined;
   Settings: undefined;
 };
 
+// типизация props для Tab
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
   CompositeScreenProps<
     BottomTabScreenProps<RootTabParamList, Screen>,

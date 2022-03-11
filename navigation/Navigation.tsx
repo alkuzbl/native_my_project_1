@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ScreenSettings} from '../screens/ScreenSettings';
 import {ScreenTodoList} from '../screens/ScreenTodoList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {ScreenTasks} from '../screens/ScreenTasks';
 
 export const Navigation = () => {
   return (
@@ -21,11 +22,20 @@ const RootNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Мой первый ежедневник"
+        name="TodoLists"
         component={BottomTabNavigator}
         options={{
+          title: 'Список дел',
           headerTitleAlign: 'center',
         }}
+      />
+      <Stack.Screen
+        name="Tasks"
+        component={ScreenTasks}
+        options={({route}) => ({
+          title: route.params.title,
+          headerTitleAlign: 'center',
+        })}
       />
     </Stack.Navigator>
   );

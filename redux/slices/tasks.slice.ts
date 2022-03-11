@@ -16,7 +16,7 @@ const initialStateTasks: InitialStateTasksType = {
       },
       {
         id: '2',
-        task: 'Learning react-native',
+        task: 'GGG',
         isDone: false,
         status: 'idle',
       },
@@ -24,13 +24,13 @@ const initialStateTasks: InitialStateTasksType = {
     ['22']: [
       {
         id: '142421',
-        task: 'Learning react-native',
+        task: 'egerger',
         isDone: false,
         status: 'idle',
       },
       {
         id: '3242134',
-        task: 'Learning react-native',
+        task: 'rrgwgwefwef rwwe wfe',
         isDone: false,
         status: 'idle',
       },
