@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-export const ScreenTasksList = () => {
+export const ScreenSettings = () => {
   return (
     <View>
-      <Text>Список подзадач</Text>
+      <Text>Настройки</Text>
     </View>
   );
 };

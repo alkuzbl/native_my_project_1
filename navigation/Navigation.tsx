@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList, RootTabParamList} from '../types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ScreenTasksList} from '../screens/ScreenTasksList';
+import {ScreenSettings} from '../screens/ScreenSettings';
 import {ScreenTodoList} from '../screens/ScreenTodoList';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -35,7 +35,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 const BottomTabNavigator = () => {
   return (
-    <BottomTab.Navigator>
+    <BottomTab.Navigator screenOptions={{headerShown: false}}>
       <BottomTab.Screen
         name="Todolist"
         component={ScreenTodoList}
@@ -45,10 +45,10 @@ const BottomTabNavigator = () => {
         }}
       />
       <BottomTab.Screen
-        name="Tasks"
-        component={ScreenTasksList}
+        name="Settings"
+        component={ScreenSettings}
         options={{
-          title: 'Список задач',
+          title: 'Настройки',
           tabBarIcon: () => <MaterialCommunityIcons name="account" />,
         }}
       />
