@@ -48,7 +48,7 @@ const slice = createSlice({
       action: PayloadAction<{todoListId: string; task: string}>,
     ) => {
       const task = {
-        id: new Date().getDate().toString(),
+        id: new Date().getTime().toString(),
         task: action.payload.task,
         isDone: false,
         status: 'idle' as StatusType,
@@ -101,7 +101,7 @@ const slice = createSlice({
     setStatusTasks: (state, action: PayloadAction<{status: StatusType}>) => {
       state.status = action.payload.status;
     },
-    setMessage: (state, action: PayloadAction<{message: string}>) => {
+    setMessageTasks: (state, action: PayloadAction<{message: string}>) => {
       state.message = action.payload.message;
     },
   },
@@ -123,5 +123,5 @@ export const {
   updateTask,
   setStatusTask,
   setStatusTasks,
-  setMessage,
+  setMessageTasks,
 } = slice.actions;
