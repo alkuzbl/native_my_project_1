@@ -1,23 +1,37 @@
 import React from 'react';
 import {FlatList, ListRenderItem, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
 import {TodoListType} from '../redux/types';
-import {Todolist} from '../components';
+import {InputText, Todolist} from '../components';
 import {RootStackScreenProps} from '../types';
+import {addTodoList} from '../redux/slices';
+import {globalStyles} from '../styles/globalStyles';
 
 export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
+  const dispatch = useDispatch();
+
   const todoLists = useSelector<RootState, TodoListType[]>(
     state => state.todoLists.todoLists,
   );
-  console.log('screenTodoList');
+
   const renderItem: ListRenderItem<TodoListType> = ({item}) => (
     <Todolist title={item.title} todoListId={item.id} navigation={navigation} />
   );
 
+  const addNewTodoList = (title: string) => {
+    const todoListId = new Date().getTime().toString();
+    dispatch(addTodoList({todoListId, title}));
+  };
+
   return (
-    <View>
-      <FlatList<TodoListType> data={todoLists} renderItem={renderItem} />
+    <View style={globalStyles.container}>
+      <InputText titleForButton="Добавить" callBack={addNewTodoList} />
+      <FlatList<TodoListType>
+        data={todoLists}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };

@@ -3,10 +3,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList, RootTabParamList} from '../types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ScreenSettings} from '../screens/ScreenSettings';
-import {ScreenTodoList} from '../screens/ScreenTodoList';
+import {
+  ScreenSettings,
+  ScreenModal,
+  ScreenTodoList,
+  ScreenTasks,
+} from '../screens';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {ScreenTasks} from '../screens/ScreenTasks';
 
 export const Navigation = () => {
   return (
@@ -25,8 +28,7 @@ const RootNavigator = () => {
         name="TodoLists"
         component={BottomTabNavigator}
         options={{
-          title: 'Список дел',
-          headerTitleAlign: 'center',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -35,8 +37,14 @@ const RootNavigator = () => {
         options={({route}) => ({
           title: route.params.title,
           headerTitleAlign: 'center',
+          headerStyle: {backgroundColor: 'black'},
+          headerTitleStyle: {color: '#d9d7d7'},
         })}
       />
+      <Stack.Group
+        screenOptions={{presentation: 'modal', animation: 'slide_from_right'}}>
+        <Stack.Screen name="Modal" component={ScreenModal} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };

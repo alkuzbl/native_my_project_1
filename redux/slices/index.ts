@@ -1,3 +1,25 @@
-export {todolistReducer} from './todolist.slice';
-export {tasksReducer} from './tasks.slice';
-export {appReducer} from './app.slice';
+export {
+  todolistReducer,
+  removeTodoList,
+  setMessageTodoLists,
+  updateTodoList,
+  setStatusTodoLists,
+  addTodoList,
+} from './todolist.slice';
+
+export {
+  tasksReducer,
+  removeTask,
+  setMessageTasks,
+  setStatusTask,
+  setStatusTasks,
+  updateTask,
+  addTask,
+} from './tasks.slice';
+
+export {
+  appReducer,
+  setInitialization,
+  setStatusApp,
+  setMessageApp,
+} from './app.slice';
