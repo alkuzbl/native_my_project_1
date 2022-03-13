@@ -31,7 +31,7 @@ export type TasksScreenRoutePropsType = RootStackScreenProps<'Tasks'>['route'];
 
 export type RootTabParamList = {
   Todolist: undefined;
-  Settings: undefined;
+  Profile: undefined;
 };
 
 // типизация props для Tab

@@ -15,7 +15,7 @@ export const TaskItem: FC<TaskItemPropsType> = props => {
 
   return (
     <TouchableOpacity style={styles.box} onLongPress={handleLongPress}>
-      <TouchableOpacity onPress={handlePressDot}>
+      <TouchableOpacity onPress={handlePressDot} style={styles.boxDot}>
         <View style={!isDone ? styles.dot : [styles.dot, styles.activeDot]} />
       </TouchableOpacity>
 
@@ -33,19 +33,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  boxDot: {
+    paddingLeft: 10,
+    paddingVertical: 20,
+    paddingRight: 20,
+  },
   dot: {
     width: 16,
     height: 16,
     borderRadius: 8,
     borderWidth: 2,
     borderColor: '#5e4131',
-    marginLeft: 10,
   },
   content: {
     fontSize: 22,
     fontWeight: '500',
     color: '#5e4131',
-    paddingHorizontal: 10,
+    paddingRight: 10,
     paddingVertical: 20,
   },
   activeText: {

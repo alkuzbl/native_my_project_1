@@ -11,8 +11,6 @@ export const Todolist: FC<TodolistPropsType> = props => {
 
   const handleLongPress = () => {
     openEditMenu(title, todoListId);
-    //navigation.navigate('Modal');
-    console.log('Open editing todolist');
   };
 
   return (

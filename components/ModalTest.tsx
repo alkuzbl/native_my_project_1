@@ -21,7 +21,7 @@ export const ModalTest = () => {
     //callBack && callBack(false);
     setModalVisible(false);
   };
-  console.log('modal');
+
   return (
     <Modal
       animationType="fade"

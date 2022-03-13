@@ -50,3 +50,9 @@ export type ModalType<T> = {
   isVisible: boolean;
   modalData: T;
 };
+
+export type RootStateForLocalStorageType = {
+  app: InitialStateAppType;
+  todoLists: InitialStateTodolistType;
+  tasks: InitialStateTasksType;
+};

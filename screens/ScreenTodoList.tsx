@@ -78,7 +78,8 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
       <ModalAction
         isVisible={isVisible}
         closeModal={closeModalWindow}
-        modalData={modalData}
+        itemTitle={modalData.title || ''}
+        itemId={modalData.todoListId}
         deleteItem={deleteTodoList}
         updateItem={updateTitle}
       />

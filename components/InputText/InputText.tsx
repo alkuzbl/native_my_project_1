@@ -59,13 +59,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   buttonContainer: {
-    backgroundColor: '#917005',
+    backgroundColor: '#d0923e',
     height: '100%',
     padding: 10,
     borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#834D26FF',
   },
   buttonTitle: {
-    color: '#eeeded',
+    color: '#834d26',
     fontSize: 20,
   },
 });

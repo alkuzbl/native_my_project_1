@@ -9,7 +9,7 @@ import {
   ScreenTodoList,
   ScreenTasks,
 } from '../screens';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export const Navigation = () => {
   return (
@@ -56,21 +56,34 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 const BottomTabNavigator = () => {
   return (
-    <BottomTab.Navigator screenOptions={{headerShown: false}}>
+    <BottomTab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#d0923e',
+          opacity: 0.7,
+          borderTopWidth: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 14,
+          color: '#5e4131',
+        },
+        tabBarActiveBackgroundColor: '#d0923e',
+      }}>
       <BottomTab.Screen
         name="Todolist"
         component={ScreenTodoList}
         options={{
           title: 'Список дел',
-          tabBarIcon: () => <MaterialCommunityIcons name="account" />,
+          tabBarIcon: () => <MaterialIcons name="note" size={30} />,
         }}
       />
       <BottomTab.Screen
-        name="Settings"
+        name="Profile"
         component={ScreenSettings}
         options={{
-          title: 'Настройки',
-          tabBarIcon: () => <MaterialCommunityIcons name="account" />,
+          title: 'Профиль',
+          tabBarIcon: () => <MaterialIcons name="account-box" size={30} />,
         }}
       />
     </BottomTab.Navigator>

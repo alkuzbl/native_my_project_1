@@ -6,9 +6,12 @@ import {ModalDataTasksType, ModalType, TaskType} from '../redux/types';
 import {InputText, TaskItem} from '../components';
 import {RootStackScreenProps} from '../types';
 import {globalStyles} from '../styles/globalStyles';
-import {addTask, updateTask} from '../redux/slices';
+import {addTask, removeTask, updateTask} from '../redux/slices';
 import {ModalAction} from '../components/modal/ModalAction';
-import {setVisibleModalTasks} from '../redux/slices/tasks.slice';
+import {
+  closeModalTasks,
+  setVisibleModalTasks,
+} from '../redux/slices/tasks.slice';
 
 export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   const dispatch = useDispatch();
@@ -18,7 +21,6 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
     RootState,
     ModalType<ModalDataTasksType>
   >(state => state.tasks.modal);
-
   const tasks = useSelector<RootState, TaskType[]>(
     state => state.tasks.tasks[route.params.todoListId],
   );
@@ -27,18 +29,26 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
     dispatch(addTask({task, todoListId}));
   };
 
-  const closeEditMenu = () => {};
+  const closeEditMenu = () => {
+    dispatch(closeModalTasks());
+  };
 
-  const updateTaskTitle = () => {};
+  const updateTaskTitle = (task: string, taskId: string) => {
+    dispatch(updateTask({todoListId, taskId, updatedData: {task}}));
+    closeEditMenu();
+  };
 
-  const deleteTask = () => {};
+  const deleteTask = (taskId: string) => {
+    dispatch(removeTask({todoListId, taskId}));
+    closeEditMenu();
+  };
 
   const openEditMenu = (title: string, taskId: string) => {
-    dispatch(setVisibleModalTasks({taskId, todoListId, title}));
+    dispatch(setVisibleModalTasks({taskId, title, todoListId}));
   };
 
   const changeTaskStatus = (isDone: boolean, taskId: string) => {
-    dispatch(updateTask({taskId, todoListId, updatedData: {isDone}}));
+    dispatch(updateTask({todoListId, taskId, updatedData: {isDone}}));
   };
 
   const renderItem: ListRenderItem<TaskType> = ({item}) => (
@@ -65,7 +75,8 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
         />
       </ImageBackground>
       <ModalAction
-        modalData={modalData}
+        itemTitle={modalData.title || ''}
+        itemId={modalData.taskId}
         closeModal={closeEditMenu}
         updateItem={updateTaskTitle}
         deleteItem={deleteTask}

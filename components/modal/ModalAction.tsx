@@ -6,7 +6,8 @@ import {ModalActionPropsType} from './ModalAction/types';
 import {TextArea} from '../TextArea/TextArea';
 
 export const ModalAction: FC<ModalActionPropsType> = memo(props => {
-  const {isVisible, closeModal, deleteItem, updateItem, modalData} = props;
+  const {isVisible, closeModal, deleteItem, updateItem, itemTitle, itemId} =
+    props;
 
   const [isEdited, setIsEdited] = useState<boolean>(false);
 
@@ -21,10 +22,10 @@ export const ModalAction: FC<ModalActionPropsType> = memo(props => {
 
   const handlePressEditItem = () => setIsEdited(true);
 
-  const handlePressDelete = () => deleteItem(modalData.todoListId);
+  const handlePressDelete = () => deleteItem(itemId);
 
   const updateValue = (value: string) => {
-    updateItem(value, modalData.todoListId);
+    updateItem(value, itemId);
     setIsEdited(false);
   };
 
@@ -40,10 +41,7 @@ export const ModalAction: FC<ModalActionPropsType> = memo(props => {
       backdropTransitionInTiming={500}
       backdropTransitionOutTiming={500}>
       {isEdited ? (
-        <TextArea
-          defaultValue={modalData.title || ''}
-          setEditedValue={updateValue}
-        />
+        <TextArea defaultValue={itemTitle} setEditedValue={updateValue} />
       ) : (
         <View style={styles.container}>
           <TouchableOpacity style={styles.button} onPress={handlePressEditItem}>
@@ -75,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e1b764',
   },
   buttonTitle: {
-    color: 'white',
+    color: '#5e4131',
     fontSize: 20,
   },
   buttonCancel: {
