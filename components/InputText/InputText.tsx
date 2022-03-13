@@ -34,7 +34,10 @@ export const InputText: FC<InputTextPropsType> = props => {
         value={value}
         onChangeText={handleChangeText}
       />
-      <TouchableOpacity style={styles.buttonContainer} onPress={handlePress}>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={handlePress}
+        disabled={value.trim().length < 3}>
         <Text style={styles.buttonTitle}>{titleForButton}</Text>
       </TouchableOpacity>
     </View>
@@ -48,15 +51,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   input: {
-    width: '70%',
-    backgroundColor: '#8c8989',
+    width: '65%',
+    backgroundColor: '#e1b764',
     paddingHorizontal: 10,
-    color: '#e7e4e4',
+    color: '#5e4131',
     borderRadius: 5,
     fontSize: 20,
   },
   buttonContainer: {
-    backgroundColor: '#498335',
+    backgroundColor: '#917005',
     height: '100%',
     padding: 10,
     borderRadius: 5,

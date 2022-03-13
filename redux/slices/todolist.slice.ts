@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {
   FilterType,
   InitialStateTodolistType,
+  ModalDataTodoListType,
   StatusType,
   TodoListType,
 } from '../types';
@@ -15,6 +16,10 @@ const initialStateTodolist: InitialStateTodolistType = {
     {id: '22', title: 'Test', filter: 'all'},
   ],
   message: undefined,
+  modal: {
+    isVisible: false,
+    modalData: {} as ModalDataTodoListType,
+  },
 };
 
 const slice = createSlice({
@@ -60,6 +65,12 @@ const slice = createSlice({
     setMessageTodoLists: (state, action: PayloadAction<{message: string}>) => {
       state.message = action.payload.message;
     },
+    setVisibleModal: (state, action: PayloadAction<ModalDataTodoListType>) => {
+      state.modal = {isVisible: true, modalData: {...action.payload}};
+    },
+    closeModal: state => {
+      state.modal = {isVisible: false, modalData: {} as ModalDataTodoListType};
+    },
   },
 });
 
@@ -71,4 +82,6 @@ export const {
   updateTodoList,
   removeTodoList,
   setMessageTodoLists,
+  setVisibleModal,
+  closeModal,
 } = slice.actions;

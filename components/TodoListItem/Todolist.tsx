@@ -3,14 +3,15 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TodolistPropsType} from './types';
 
 export const Todolist: FC<TodolistPropsType> = props => {
-  const {title, navigation, todoListId} = props;
+  const {title, navigation, todoListId, openEditMenu} = props;
 
   const handlePress = () => {
     navigation.navigate('Tasks', {todoListId, title});
   };
 
-  const openEditingTodoList = () => {
-    navigation.navigate('Modal');
+  const handleLongPress = () => {
+    openEditMenu(title, todoListId);
+    //navigation.navigate('Modal');
     console.log('Open editing todolist');
   };
 
@@ -18,8 +19,8 @@ export const Todolist: FC<TodolistPropsType> = props => {
     <TouchableOpacity
       onPress={handlePress}
       style={styles.box}
-      onLongPress={openEditingTodoList}>
-      <Text style={styles.content}>{title}</Text>
+      onLongPress={handleLongPress}>
+      <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -27,13 +28,16 @@ export const Todolist: FC<TodolistPropsType> = props => {
 const styles = StyleSheet.create({
   box: {
     flex: 1,
+    backgroundColor: '#cc7c3c',
+    marginBottom: 10,
+    marginHorizontal: 5,
+    borderRadius: 8,
   },
-  content: {
+  text: {
     fontSize: 22,
-    color: '#e7e4e4',
+    fontWeight: '600',
+    color: 'rgba(12,10,3,0.58)',
     paddingHorizontal: 10,
     paddingVertical: 20,
-    borderBottomWidth: 2,
-    borderColor: '#c0bfbf',
   },
 });

@@ -8,10 +8,20 @@ export type TodoListType = {
   filter: FilterType;
 };
 
+export type ModalDataTodoListType = {
+  todoListId: string;
+  title?: string;
+};
+
+export type ModalDataTasksType = ModalDataTodoListType & {
+  taskId: string;
+};
+
 export type InitialStateTodolistType = {
   status: StatusType;
   todoLists: TodoListType[];
   message: string | undefined;
+  modal: ModalType<ModalDataTodoListType>;
 };
 
 export type TaskType = {
@@ -27,10 +37,16 @@ export type InitialStateTasksType = {
   tasks: {
     [key: string]: TaskType[];
   };
+  modal: ModalType<ModalDataTasksType>;
 };
 
 export type InitialStateAppType = {
   status: StatusType;
   message: string | undefined;
   isInitialized: boolean;
+};
+
+export type ModalType<T> = {
+  isVisible: boolean;
+  modalData: T;
 };

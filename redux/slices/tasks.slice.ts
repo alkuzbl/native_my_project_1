@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {InitialStateTasksType, StatusType} from '../types';
+import {InitialStateTasksType, ModalDataTasksType, StatusType} from '../types';
 import {addTodoList} from './todolist.slice';
 
 const TASKS = 'tasks';
@@ -17,7 +17,7 @@ const initialStateTasks: InitialStateTasksType = {
       {
         id: '2',
         task: 'GGG',
-        isDone: false,
+        isDone: true,
         status: 'idle',
       },
     ],
@@ -37,6 +37,10 @@ const initialStateTasks: InitialStateTasksType = {
     ],
   },
   message: undefined,
+  modal: {
+    isVisible: false,
+    modalData: {} as ModalDataTasksType,
+  },
 };
 
 const slice = createSlice({
@@ -104,6 +108,15 @@ const slice = createSlice({
     setMessageTasks: (state, action: PayloadAction<{message: string}>) => {
       state.message = action.payload.message;
     },
+    setVisibleModalTasks: (
+      state,
+      action: PayloadAction<ModalDataTasksType>,
+    ) => {
+      state.modal = {isVisible: true, modalData: {...action.payload}};
+    },
+    closeModalTasks: state => {
+      state.modal = {isVisible: false, modalData: {} as ModalDataTasksType};
+    },
   },
   extraReducers: builder => {
     builder.addCase(
@@ -124,4 +137,6 @@ export const {
   setStatusTask,
   setStatusTasks,
   setMessageTasks,
+  setVisibleModalTasks,
+  closeModalTasks,
 } = slice.actions;

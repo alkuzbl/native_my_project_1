@@ -37,12 +37,15 @@ const RootNavigator = () => {
         options={({route}) => ({
           title: route.params.title,
           headerTitleAlign: 'center',
-          headerStyle: {backgroundColor: 'black'},
-          headerTitleStyle: {color: '#d9d7d7'},
+          headerStyle: {backgroundColor: '#d0923e'},
+          headerTitleStyle: {color: '#8d522b', fontWeight: '800', fontSize: 26},
         })}
       />
       <Stack.Group
-        screenOptions={{presentation: 'modal', animation: 'slide_from_right'}}>
+        screenOptions={{
+          presentation: 'modal',
+          animation: 'slide_from_right',
+        }}>
         <Stack.Screen name="Modal" component={ScreenModal} />
       </Stack.Group>
     </Stack.Navigator>
