@@ -1,4 +1,8 @@
-import {InitialStateTodolistType} from '../../types';
+import {
+  InitialStateTodolistType,
+  ModalDataTodoListType,
+  ModalType,
+} from '../../types';
 import {
   addTodoList,
   removeTodoList,
@@ -13,6 +17,7 @@ test('The todoList should be added', () => {
     status: 'idle',
     message: undefined,
     todoLists: [],
+    modal: {} as ModalType<ModalDataTodoListType>,
   } as InitialStateTodolistType;
 
   expect(
@@ -24,6 +29,7 @@ test('The todoList should be added', () => {
     status: 'idle',
     message: undefined,
     todoLists: [{id: '55555', title: 'Test title', filter: 'all'}],
+    modal: {},
   });
 
   expect(previousState.todoLists[0]).toBe(undefined);
@@ -34,6 +40,7 @@ test('The todoList should be removed', () => {
     status: 'idle',
     message: undefined,
     todoLists: [{id: '55555', title: 'Test title', filter: 'all'}],
+    modal: {},
   } as InitialStateTodolistType;
 
   expect(
@@ -42,6 +49,7 @@ test('The todoList should be removed', () => {
     status: 'idle',
     message: undefined,
     todoLists: [],
+    modal: {},
   });
 
   expect(previousState.todoLists[0]).toStrictEqual({
@@ -56,6 +64,7 @@ test('The todoList should be updated', () => {
     status: 'idle',
     message: undefined,
     todoLists: [{id: '55555', title: 'Test title', filter: 'all'}],
+    modal: {},
   } as InitialStateTodolistType;
 
   expect(
@@ -71,6 +80,7 @@ test('The todoList should be updated', () => {
     status: 'idle',
     message: undefined,
     todoLists: [{id: '55555', title: 'Update', filter: 'completed'}],
+    modal: {},
   });
 
   expect(previousState.todoLists[0]).toEqual({
@@ -85,6 +95,7 @@ test('The todoList status should be succeed', () => {
     status: 'idle',
     message: undefined,
     todoLists: [],
+    modal: {} as ModalType<ModalDataTodoListType>,
   } as InitialStateTodolistType;
 
   expect(
@@ -98,6 +109,7 @@ test('The todoList status should be succeed', () => {
     status: 'succeed',
     message: undefined,
     todoLists: [],
+    modal: {},
   });
 
   expect(previousState.todoLists[0]).toBe(undefined);
@@ -108,6 +120,7 @@ test('The todoList message should be "Error"', () => {
     status: 'idle',
     message: undefined,
     todoLists: [],
+    modal: {} as ModalType<ModalDataTodoListType>,
   } as InitialStateTodolistType;
 
   expect(
@@ -121,6 +134,7 @@ test('The todoList message should be "Error"', () => {
     status: 'idle',
     message: 'Error',
     todoLists: [],
+    modal: {},
   });
 
   expect(previousState.todoLists[0]).toBe(undefined);

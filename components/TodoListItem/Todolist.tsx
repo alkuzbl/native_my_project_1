@@ -1,27 +1,29 @@
-import React, {FC} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TodolistPropsType} from './types';
 
-export const Todolist: FC<TodolistPropsType> = props => {
-  const {title, navigation, todoListId, openEditMenu} = props;
+export const Todolist: React.NamedExoticComponent<TodolistPropsType> = memo(
+  props => {
+    const {title, navigation, todoListId, openEditMenu} = props;
 
-  const handlePress = () => {
-    navigation.navigate('Tasks', {todoListId, title});
-  };
+    const handlePress = () => {
+      navigation.navigate('Tasks', {todoListId, title});
+    };
 
-  const handleLongPress = () => {
-    openEditMenu(title, todoListId);
-  };
+    const handleLongPress = () => {
+      openEditMenu(title, todoListId);
+    };
 
-  return (
-    <TouchableOpacity
-      onPress={handlePress}
-      style={styles.box}
-      onLongPress={handleLongPress}>
-      <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
+    return (
+      <TouchableOpacity
+        onPress={handlePress}
+        style={styles.box}
+        onLongPress={handleLongPress}>
+        <Text style={styles.text}>{title}</Text>
+      </TouchableOpacity>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   box: {

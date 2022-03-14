@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,36 +6,34 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {TextAreaPropsType} from './types';
 
-export type TextAreaPropsType = {
-  defaultValue: string;
-  setEditedValue: (value: string) => void;
-};
+export const TextArea: React.NamedExoticComponent<TextAreaPropsType> = memo(
+  props => {
+    const {defaultValue, setEditedValue} = props;
+    const [value, setValue] = useState<string>(defaultValue);
 
-export const TextArea: FC<TextAreaPropsType> = props => {
-  const {defaultValue, setEditedValue} = props;
-  const [value, setValue] = useState<string>(defaultValue);
+    const handleChangeText = (text: string) => setValue(text);
 
-  const handleChangeText = (text: string) => setValue(text);
+    const handlePress = () => setEditedValue(value);
 
-  const handlePress = () => setEditedValue(value);
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={styles.text}
+          multiline
+          numberOfLines={4}
+          value={value}
+          onChangeText={handleChangeText}
+        />
 
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.text}
-        multiline
-        numberOfLines={4}
-        value={value}
-        onChangeText={handleChangeText}
-      />
-
-      <TouchableOpacity style={styles.button} onPress={handlePress}>
-        <Text style={styles.buttonTitle}>Отправить</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
+          <Text style={styles.buttonTitle}>Отправить</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   container: {

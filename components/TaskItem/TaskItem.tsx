@@ -1,31 +1,35 @@
-import React, {FC} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TaskItemPropsType} from './types';
 
-export const TaskItem: FC<TaskItemPropsType> = props => {
-  const {title, isDone, id, changeStatus, openEditMenu} = props;
+export const TaskItem: React.NamedExoticComponent<TaskItemPropsType> = memo(
+  props => {
+    const {title, isDone, id, changeStatus, openEditMenu} = props;
 
-  const handleLongPress = () => {
-    openEditMenu && openEditMenu(title, id);
-  };
+    const handleLongPress = () => {
+      openEditMenu && openEditMenu(title, id);
+    };
 
-  const handlePressDot = () => {
-    changeStatus && changeStatus(!isDone, id);
-  };
+    const handlePressDot = () => {
+      changeStatus && changeStatus(!isDone, id);
+    };
 
-  return (
-    <TouchableOpacity style={styles.box} onLongPress={handleLongPress}>
-      <TouchableOpacity onPress={handlePressDot} style={styles.boxDot}>
-        <View style={!isDone ? styles.dot : [styles.dot, styles.activeDot]} />
+    return (
+      <TouchableOpacity style={styles.box} onLongPress={handleLongPress}>
+        <TouchableOpacity onPress={handlePressDot} style={styles.boxDot}>
+          <View style={!isDone ? styles.dot : [styles.dot, styles.activeDot]} />
+        </TouchableOpacity>
+
+        <Text
+          style={
+            !isDone ? styles.content : [styles.content, styles.activeText]
+          }>
+          {title}
+        </Text>
       </TouchableOpacity>
-
-      <Text
-        style={!isDone ? styles.content : [styles.content, styles.activeText]}>
-        {title}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   box: {

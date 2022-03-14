@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -12,37 +12,39 @@ export type InputTextPropsType = {
   titleForButton: string;
 };
 
-export const InputText: FC<InputTextPropsType> = props => {
-  const {callBack, titleForButton} = props;
+export const InputText: React.NamedExoticComponent<InputTextPropsType> = memo(
+  props => {
+    const {callBack, titleForButton} = props;
 
-  const [value, setValue] = useState<string>('');
+    const [value, setValue] = useState<string>('');
 
-  const handleChangeText = (text: string) => setValue(text);
+    const handleChangeText = (text: string) => setValue(text);
 
-  // дописать логику на ошибку при вводе менее 3х символов
-  const handlePress = () => {
-    if (value.trim().length > 2) {
-      callBack(value);
-      setValue('');
-    }
-  };
+    const handlePress = () => {
+      if (value.trim().length >= 2) {
+        callBack(value);
+        setValue('');
+      }
+    };
 
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={value}
-        onChangeText={handleChangeText}
-      />
-      <TouchableOpacity
-        style={styles.buttonContainer}
-        onPress={handlePress}
-        disabled={value.trim().length < 3}>
-        <Text style={styles.buttonTitle}>{titleForButton}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          value={value}
+          onChangeText={handleChangeText}
+        />
+
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={handlePress}
+          disabled={value.trim().length < 2}>
+          <Text style={styles.buttonTitle}>{titleForButton}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   container: {

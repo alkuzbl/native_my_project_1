@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {FlatList, ImageBackground, ListRenderItem, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux/store';
@@ -6,12 +6,14 @@ import {ModalDataTasksType, ModalType, TaskType} from '../redux/types';
 import {InputText, TaskItem} from '../components';
 import {RootStackScreenProps} from '../types';
 import {globalStyles} from '../styles/globalStyles';
-import {addTask, removeTask, updateTask} from '../redux/slices';
-import {ModalAction} from '../components/modal/ModalAction';
 import {
+  addTask,
+  removeTask,
+  updateTask,
   closeModalTasks,
   setVisibleModalTasks,
-} from '../redux/slices/tasks.slice';
+} from '../redux/slices';
+import {ModalAction} from '../components/modal/ModalAction/ModalAction';
 
 export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   const dispatch = useDispatch();
@@ -25,31 +27,46 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
     state => state.tasks.tasks[route.params.todoListId],
   );
 
-  const addNewTask = (task: string) => {
-    dispatch(addTask({task, todoListId}));
-  };
+  const addNewTask = useCallback(
+    (task: string) => {
+      dispatch(addTask({task, todoListId}));
+    },
+    [dispatch, todoListId],
+  );
 
-  const closeEditMenu = () => {
+  const closeEditMenu = useCallback(() => {
     dispatch(closeModalTasks());
-  };
+  }, [dispatch]);
 
-  const updateTaskTitle = (task: string, taskId: string) => {
-    dispatch(updateTask({todoListId, taskId, updatedData: {task}}));
-    closeEditMenu();
-  };
+  const updateTaskTitle = useCallback(
+    (task: string, taskId: string) => {
+      dispatch(updateTask({todoListId, taskId, updatedData: {task}}));
+      closeEditMenu();
+    },
+    [closeEditMenu, dispatch, todoListId],
+  );
 
-  const deleteTask = (taskId: string) => {
-    dispatch(removeTask({todoListId, taskId}));
-    closeEditMenu();
-  };
+  const deleteTask = useCallback(
+    (taskId: string) => {
+      dispatch(removeTask({todoListId, taskId}));
+      closeEditMenu();
+    },
+    [closeEditMenu, dispatch, todoListId],
+  );
 
-  const openEditMenu = (title: string, taskId: string) => {
-    dispatch(setVisibleModalTasks({taskId, title, todoListId}));
-  };
+  const openEditMenu = useCallback(
+    (title: string, taskId: string) => {
+      dispatch(setVisibleModalTasks({taskId, title, todoListId}));
+    },
+    [dispatch, todoListId],
+  );
 
-  const changeTaskStatus = (isDone: boolean, taskId: string) => {
-    dispatch(updateTask({todoListId, taskId, updatedData: {isDone}}));
-  };
+  const changeTaskStatus = useCallback(
+    (isDone: boolean, taskId: string) => {
+      dispatch(updateTask({todoListId, taskId, updatedData: {isDone}}));
+    },
+    [dispatch, todoListId],
+  );
 
   const renderItem: ListRenderItem<TaskType> = ({item}) => (
     <TaskItem
@@ -68,12 +85,14 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
         source={require('../assets/images/background.jpg')}
         resizeMode="cover">
         <InputText titleForButton="Добавить" callBack={addNewTask} />
+
         <FlatList<TaskType>
           data={tasks}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
       </ImageBackground>
+
       <ModalAction
         itemTitle={modalData.title || ''}
         itemId={modalData.taskId}

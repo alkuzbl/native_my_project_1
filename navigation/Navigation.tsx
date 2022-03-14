@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList, RootTabParamList} from '../types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';

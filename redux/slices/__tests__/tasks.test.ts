@@ -1,4 +1,8 @@
-import {InitialStateTasksType} from '../../types';
+import {
+  InitialStateTasksType,
+  ModalDataTasksType,
+  ModalType,
+} from '../../types';
 import {
   addTask,
   removeTask,
@@ -23,6 +27,7 @@ test('The task should be added', () => {
         },
       ],
     },
+    modal: {} as ModalType<ModalDataTasksType>,
   } as InitialStateTasksType;
 
   const testState = tasksReducer(
@@ -47,6 +52,7 @@ test('The task should be removed', () => {
         },
       ],
     },
+    modal: {} as ModalType<ModalDataTasksType>,
   } as InitialStateTasksType;
 
   const testState = tasksReducer(
@@ -71,6 +77,7 @@ test('The task should be updated', () => {
         },
       ],
     },
+    modal: {} as ModalType<ModalDataTasksType>,
   } as InitialStateTasksType;
 
   expect(
@@ -98,6 +105,7 @@ test('The task should be updated', () => {
         },
       ],
     },
+    modal: {},
   });
 
   expect(previousState.tasks['55555'][0].task).toBe('Learning react-native');
@@ -117,6 +125,7 @@ test('The status task should be updated', () => {
         },
       ],
     },
+    modal: {} as ModalType<ModalDataTasksType>,
   } as InitialStateTasksType;
 
   expect(
@@ -137,6 +146,7 @@ test('The status task should be updated', () => {
         },
       ],
     },
+    modal: {},
   });
 });
 
@@ -154,6 +164,7 @@ test('The status tasks should be updated', () => {
         },
       ],
     },
+    modal: {} as ModalType<ModalDataTasksType>,
   } as InitialStateTasksType;
 
   expect(
@@ -171,6 +182,7 @@ test('The status tasks should be updated', () => {
         },
       ],
     },
+    modal: {},
   });
 });
 
@@ -188,6 +200,7 @@ test('The message should be "Error"', () => {
         },
       ],
     },
+    modal: {} as ModalType<ModalDataTasksType>,
   } as InitialStateTasksType;
 
   expect(
@@ -205,5 +218,6 @@ test('The message should be "Error"', () => {
         },
       ],
     },
+    modal: {},
   });
 });

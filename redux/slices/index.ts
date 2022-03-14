@@ -5,6 +5,8 @@ export {
   updateTodoList,
   setStatusTodoLists,
   addTodoList,
+  setVisibleModal,
+  closeModal,
 } from './todolist.slice';
 
 export {
@@ -15,6 +17,8 @@ export {
   setStatusTasks,
   updateTask,
   addTask,
+  setVisibleModalTasks,
+  closeModalTasks,
 } from './tasks.slice';
 
 export {

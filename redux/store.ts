@@ -19,7 +19,7 @@ export type AppDispatch = typeof store.dispatch;
 //   key: 'root',
 //   storage: AsyncStorage,
 // };
-
+//
 // export const store = configureStore({
 //   reducer: {
 //     app: persistReducer(persistConfig, appReducer),
@@ -27,5 +27,4 @@ export type AppDispatch = typeof store.dispatch;
 //     tasks: persistReducer(persistConfig, tasksReducer),
 //   },
 // });
-
 // export const persistStor = persistStore(store);
