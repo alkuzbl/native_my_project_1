@@ -11,10 +11,7 @@ const TODO_LISTS = 'todolist';
 
 const initialStateTodolist: InitialStateTodolistType = {
   status: 'idle',
-  todoLists: [
-    {id: '11', title: 'Learn', filter: 'all'},
-    {id: '22', title: 'Test', filter: 'all'},
-  ],
+  todoLists: [{id: '11', title: 'React-native', filter: 'all'}],
   message: undefined,
   modal: {
     isVisible: false,
