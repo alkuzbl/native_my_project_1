@@ -57,8 +57,8 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   }, [dispatch]);
 
   const updateTaskTitle = useCallback(
-    (task: string, taskId: string) => {
-      dispatch(updateTask({todoListId, taskId, updatedData: {task}}));
+    (title: string, taskId: string) => {
+      dispatch(updateTask({todoListId, taskId, updatedData: {title}}));
       closeEditMenu();
     },
     [closeEditMenu, dispatch, todoListId],
@@ -100,7 +100,7 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
 
   const renderItem: ListRenderItem<TaskType> = ({item}) => (
     <TaskItem
-      title={item.task}
+      title={item.title}
       id={item.id}
       isDone={item.isDone}
       changeStatus={changeTaskStatus}

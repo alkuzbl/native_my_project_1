@@ -12,49 +12,46 @@ import {
   tasksReducer,
   updateTask,
 } from '../tasks.slice';
+import {TaskPriorities, TaskStatuses} from '../../../dal/types';
 
-test('The task should be added', () => {
-  const previousState = {
+let previousState: InitialStateTasksType;
+
+beforeEach(() => {
+  previousState = {
     status: 'idle',
     message: undefined,
     tasks: {
       '55555': [
         {
           id: '1',
-          task: 'Learning react-native',
+          title: 'Каркас для приложения',
           isDone: false,
-          status: 'idle',
+          taskStatus: 'idle',
+          description: '',
+          status: TaskStatuses.New,
+          deadline: '',
+          startDate: '',
+          todoListId: '',
+          priority: TaskPriorities.Low,
+          order: 0,
+          addedDate: '',
         },
       ],
     },
     modal: {} as ModalType<ModalDataTasksType>,
-  } as InitialStateTasksType;
+  };
+});
 
+test('The task should be added', () => {
   const testState = tasksReducer(
     previousState,
     addTask({todoListId: '55555', task: 'Test task title'}),
   );
 
-  expect(testState.tasks['55555'][0].task).toBe('Test task title');
+  expect(testState.tasks['55555'][0].title).toBe('Test task title');
 });
 
 test('The task should be removed', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    tasks: {
-      '55555': [
-        {
-          id: '1',
-          task: 'Learning react-native',
-          isDone: false,
-          status: 'idle',
-        },
-      ],
-    },
-    modal: {} as ModalType<ModalDataTasksType>,
-  } as InitialStateTasksType;
-
   const testState = tasksReducer(
     previousState,
     removeTask({todoListId: '55555', taskId: '1'}),
@@ -64,22 +61,6 @@ test('The task should be removed', () => {
 });
 
 test('The task should be updated', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    tasks: {
-      '55555': [
-        {
-          id: '1',
-          task: 'Learning react-native',
-          isDone: false,
-          status: 'idle',
-        },
-      ],
-    },
-    modal: {} as ModalType<ModalDataTasksType>,
-  } as InitialStateTasksType;
-
   expect(
     tasksReducer(
       previousState,
@@ -87,7 +68,7 @@ test('The task should be updated', () => {
         todoListId: '55555',
         taskId: '1',
         updatedData: {
-          task: 'Test task (updated)',
+          title: 'Test task (updated)',
           isDone: true,
         },
       }),
@@ -99,39 +80,31 @@ test('The task should be updated', () => {
       '55555': [
         {
           id: '1',
-          task: 'Test task (updated)',
+          title: 'Test task (updated)',
           isDone: true,
-          status: 'idle',
+          taskStatus: 'idle',
+          description: '',
+          status: TaskStatuses.New,
+          deadline: '',
+          startDate: '',
+          todoListId: '',
+          priority: TaskPriorities.Low,
+          order: 0,
+          addedDate: '',
         },
       ],
     },
     modal: {},
   });
 
-  expect(previousState.tasks['55555'][0].task).toBe('Learning react-native');
+  expect(previousState.tasks['55555'][0].title).toBe('Каркас для приложения');
 });
 
 test('The status task should be updated', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    tasks: {
-      '55555': [
-        {
-          id: '1',
-          task: 'Learning react-native',
-          isDone: false,
-          status: 'idle',
-        },
-      ],
-    },
-    modal: {} as ModalType<ModalDataTasksType>,
-  } as InitialStateTasksType;
-
   expect(
     tasksReducer(
       previousState,
-      setStatusTask({todoListId: '55555', taskId: '1', status: 'succeed'}),
+      setStatusTask({todoListId: '55555', taskId: '1', taskStatus: 'succeed'}),
     ),
   ).toEqual({
     status: 'idle',
@@ -140,9 +113,17 @@ test('The status task should be updated', () => {
       '55555': [
         {
           id: '1',
-          task: 'Learning react-native',
+          title: 'Каркас для приложения',
           isDone: false,
-          status: 'succeed',
+          taskStatus: 'succeed',
+          description: '',
+          status: TaskStatuses.New,
+          deadline: '',
+          startDate: '',
+          todoListId: '',
+          priority: TaskPriorities.Low,
+          order: 0,
+          addedDate: '',
         },
       ],
     },
@@ -151,22 +132,6 @@ test('The status task should be updated', () => {
 });
 
 test('The status tasks should be updated', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    tasks: {
-      '55555': [
-        {
-          id: '1',
-          task: 'Learning react-native',
-          isDone: false,
-          status: 'idle',
-        },
-      ],
-    },
-    modal: {} as ModalType<ModalDataTasksType>,
-  } as InitialStateTasksType;
-
   expect(
     tasksReducer(previousState, setStatusTasks({status: 'succeed'})),
   ).toEqual({
@@ -176,9 +141,17 @@ test('The status tasks should be updated', () => {
       '55555': [
         {
           id: '1',
-          task: 'Learning react-native',
+          title: 'Каркас для приложения',
           isDone: false,
-          status: 'idle',
+          taskStatus: 'idle',
+          description: '',
+          status: TaskStatuses.New,
+          deadline: '',
+          startDate: '',
+          todoListId: '',
+          priority: TaskPriorities.Low,
+          order: 0,
+          addedDate: '',
         },
       ],
     },
@@ -187,22 +160,6 @@ test('The status tasks should be updated', () => {
 });
 
 test('The message should be "Error"', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    tasks: {
-      '55555': [
-        {
-          id: '1',
-          task: 'Learning react-native',
-          isDone: false,
-          status: 'idle',
-        },
-      ],
-    },
-    modal: {} as ModalType<ModalDataTasksType>,
-  } as InitialStateTasksType;
-
   expect(
     tasksReducer(previousState, setMessageTasks({message: 'Error'})),
   ).toEqual({
@@ -212,9 +169,17 @@ test('The message should be "Error"', () => {
       '55555': [
         {
           id: '1',
-          task: 'Learning react-native',
+          title: 'Каркас для приложения',
           isDone: false,
-          status: 'idle',
+          taskStatus: 'idle',
+          description: '',
+          status: TaskStatuses.New,
+          deadline: '',
+          startDate: '',
+          todoListId: '',
+          priority: TaskPriorities.Low,
+          order: 0,
+          addedDate: '',
         },
       ],
     },

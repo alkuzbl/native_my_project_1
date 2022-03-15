@@ -1,8 +1,4 @@
-import {
-  InitialStateTodolistType,
-  ModalDataTodoListType,
-  ModalType,
-} from '../../types';
+import {InitialStateTodolistType, ModalDataTodoListType} from '../../types';
 import {
   addTodoList,
   removeTodoList,
@@ -12,66 +8,72 @@ import {
   updateTodoList,
 } from '../todolist.slice';
 
-test('The todoList should be added', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    todoLists: [],
-    modal: {} as ModalType<ModalDataTodoListType>,
-  } as InitialStateTodolistType;
+let previousState: InitialStateTodolistType;
 
+beforeEach(() => {
+  previousState = {
+    status: 'idle',
+    todoLists: [
+      {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
+    ],
+    message: undefined,
+    modal: {
+      isVisible: false,
+      modalData: {} as ModalDataTodoListType,
+    },
+  };
+});
+
+test('The todoList should be added', () => {
   expect(
     todolistReducer(
       previousState,
-      addTodoList({title: 'Test title', todoListId: '55555'}),
+      addTodoList({title: 'Test title', todoListId: '77777'}),
     ),
   ).toEqual({
     status: 'idle',
     message: undefined,
-    todoLists: [{id: '55555', title: 'Test title', filter: 'all'}],
-    modal: {},
+    todoLists: [
+      {
+        id: '77777',
+        title: 'Test title',
+        filter: 'all',
+        addedDate: '',
+        order: 0,
+      },
+      {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
+    ],
+    modal: {
+      isVisible: false,
+      modalData: {} as ModalDataTodoListType,
+    },
   });
 
-  expect(previousState.todoLists[0]).toBe(undefined);
+  expect(previousState.todoLists.length).toBe(1);
 });
 
 test('The todoList should be removed', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    todoLists: [{id: '55555', title: 'Test title', filter: 'all'}],
-    modal: {},
-  } as InitialStateTodolistType;
-
   expect(
-    todolistReducer(previousState, removeTodoList({todoListId: '55555'})),
+    todolistReducer(previousState, removeTodoList({todoListId: '11'})),
   ).toEqual({
     status: 'idle',
     message: undefined,
     todoLists: [],
-    modal: {},
+    modal: {
+      isVisible: false,
+      modalData: {} as ModalDataTodoListType,
+    },
   });
 
-  expect(previousState.todoLists[0]).toStrictEqual({
-    id: '55555',
-    title: 'Test title',
-    filter: 'all',
-  });
+  expect(previousState.todoLists[0]).not.toBe(undefined);
 });
 
 test('The todoList should be updated', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    todoLists: [{id: '55555', title: 'Test title', filter: 'all'}],
-    modal: {},
-  } as InitialStateTodolistType;
-
   expect(
     todolistReducer(
       previousState,
       updateTodoList({
-        id: '55555',
+        id: '11',
         title: 'Update',
         filter: 'completed',
       }),
@@ -79,25 +81,17 @@ test('The todoList should be updated', () => {
   ).toEqual({
     status: 'idle',
     message: undefined,
-    todoLists: [{id: '55555', title: 'Update', filter: 'completed'}],
-    modal: {},
-  });
-
-  expect(previousState.todoLists[0]).toEqual({
-    id: '55555',
-    title: 'Test title',
-    filter: 'all',
+    todoLists: [
+      {id: '11', title: 'Update', filter: 'completed', addedDate: '', order: 0},
+    ],
+    modal: {
+      isVisible: false,
+      modalData: {} as ModalDataTodoListType,
+    },
   });
 });
 
 test('The todoList status should be succeed', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    todoLists: [],
-    modal: {} as ModalType<ModalDataTodoListType>,
-  } as InitialStateTodolistType;
-
   expect(
     todolistReducer(
       previousState,
@@ -108,21 +102,19 @@ test('The todoList status should be succeed', () => {
   ).toEqual({
     status: 'succeed',
     message: undefined,
-    todoLists: [],
-    modal: {},
+    todoLists: [
+      {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
+    ],
+    modal: {
+      isVisible: false,
+      modalData: {} as ModalDataTodoListType,
+    },
   });
 
-  expect(previousState.todoLists[0]).toBe(undefined);
+  expect(previousState.status).toBe('idle');
 });
 
 test('The todoList message should be "Error"', () => {
-  const previousState = {
-    status: 'idle',
-    message: undefined,
-    todoLists: [],
-    modal: {} as ModalType<ModalDataTodoListType>,
-  } as InitialStateTodolistType;
-
   expect(
     todolistReducer(
       previousState,
@@ -133,9 +125,14 @@ test('The todoList message should be "Error"', () => {
   ).toEqual({
     status: 'idle',
     message: 'Error',
-    todoLists: [],
-    modal: {},
+    todoLists: [
+      {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
+    ],
+    modal: {
+      isVisible: false,
+      modalData: {} as ModalDataTodoListType,
+    },
   });
 
-  expect(previousState.todoLists[0]).toBe(undefined);
+  expect(previousState.message).toBe(undefined);
 });

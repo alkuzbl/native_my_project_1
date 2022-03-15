@@ -1,6 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {InitialStateTasksType, ModalDataTasksType, StatusType} from '../types';
+import {
+  InitialStateTasksType,
+  ModalDataTasksType,
+  StatusType,
+  TaskType,
+} from '../types';
 import {addTodoList} from './todolist.slice';
+import {TaskPriorities, TaskStatuses} from '../../dal/types';
 
 const TASKS = 'tasks';
 
@@ -10,63 +16,143 @@ const initialStateTasks: InitialStateTasksType = {
     ['11']: [
       {
         id: '1',
-        task: 'Каркас для приложения',
+        title: 'Каркас для приложения',
         isDone: true,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.New,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '2',
-        task: 'Познакомиться с основными принципами react-native',
+        title: 'Познакомиться с основными принципами react-native',
         isDone: true,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '3',
-        task: 'Разобраться с react-navigate',
+        title: 'Разобраться с react-navigate',
         isDone: true,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '4',
-        task: 'Unit тесты',
+        title: 'Unit тесты',
         isDone: true,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '5',
-        task: 'Поработать с LocalStorage',
+        title: 'Поработать с LocalStorage',
         isDone: false,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '6',
-        task: 'Переписать на работу с сервером (Get, Post, Put, Delete)',
+        title: 'Переписать на работу с сервером (Get, Post, Put, Delete)',
         isDone: false,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '7',
-        task: 'Сделать страницу пользователя',
+        title: 'Сделать страницу пользователя',
         isDone: false,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '8',
-        task: 'Сделать авторизацию',
+        title: 'Сделать авторизацию',
         isDone: false,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '9',
-        task: 'Поработать с куки и токеном при авторизации и работе с API',
+        title: 'Поработать с куки и токеном при авторизации и работе с API',
         isDone: false,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
       {
         id: '10',
-        task: 'Тестирование thunk (mock)',
+        title: 'Тестирование thunk (mock)',
         isDone: false,
-        status: 'idle',
+        taskStatus: 'idle',
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       },
     ],
   },
@@ -85,11 +171,19 @@ const slice = createSlice({
       state,
       action: PayloadAction<{todoListId: string; task: string}>,
     ) => {
-      const task = {
+      const task: TaskType = {
         id: new Date().getTime().toString(),
-        task: action.payload.task,
+        title: action.payload.task,
         isDone: false,
-        status: 'idle' as StatusType,
+        taskStatus: 'idle' as StatusType,
+        description: '',
+        status: TaskStatuses.Completed,
+        deadline: '',
+        startDate: '',
+        todoListId: '',
+        priority: TaskPriorities.Low,
+        order: 0,
+        addedDate: '',
       };
       state.tasks[action.payload.todoListId].unshift(task);
     },
@@ -107,7 +201,7 @@ const slice = createSlice({
         todoListId: string;
         taskId: string;
         updatedData: {
-          task?: string;
+          title?: string;
           isDone?: boolean;
         };
       }>,
@@ -125,14 +219,14 @@ const slice = createSlice({
       action: PayloadAction<{
         todoListId: string;
         taskId: string;
-        status: StatusType;
+        taskStatus: StatusType;
       }>,
     ) => {
       state.tasks[action.payload.todoListId] = state.tasks[
         action.payload.todoListId
       ].map(task =>
         task.id === action.payload.taskId
-          ? {...task, status: action.payload.status}
+          ? {...task, taskStatus: action.payload.taskStatus}
           : task,
       );
     },

@@ -11,7 +11,9 @@ const TODO_LISTS = 'todolist';
 
 const initialStateTodolist: InitialStateTodolistType = {
   status: 'idle',
-  todoLists: [{id: '11', title: 'React-native', filter: 'all'}],
+  todoLists: [
+    {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
+  ],
   message: undefined,
   modal: {
     isVisible: false,
@@ -31,6 +33,8 @@ const slice = createSlice({
         id: action.payload.todoListId,
         title: action.payload.title,
         filter: 'all',
+        order: 0,
+        addedDate: '',
       };
       state.todoLists.unshift(todoList);
     },

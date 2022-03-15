@@ -1,3 +1,5 @@
+import {TaskPriorities, TaskStatuses} from '../../dal/types';
+
 export type StatusType = 'idle' | 'loading' | 'failed' | 'succeed';
 
 export type FilterType = 'all' | 'active' | 'completed';
@@ -6,6 +8,9 @@ export type TodoListType = {
   id: string;
   title: string;
   filter: FilterType;
+  //
+  addedDate: string;
+  order: number;
 };
 
 export type ModalDataTodoListType = {
@@ -25,10 +30,19 @@ export type InitialStateTodolistType = {
 };
 
 export type TaskType = {
+  description: string;
+  title: string;
+  status: TaskStatuses;
+  priority: TaskPriorities;
+  startDate: string;
+  deadline: string;
   id: string;
-  task: string;
+  todoListId: string;
+  order: number;
+  addedDate: string;
+  ///
   isDone: boolean;
-  status: StatusType;
+  taskStatus: StatusType;
 };
 
 export type InitialStateTasksType = {
@@ -51,8 +65,8 @@ export type ModalType<T> = {
   modalData: T;
 };
 
-export type RootStateForLocalStorageType = {
-  app: InitialStateAppType;
-  todoLists: InitialStateTodolistType;
-  tasks: InitialStateTasksType;
+export type AuthDataType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
 };
