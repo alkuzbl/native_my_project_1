@@ -4,10 +4,10 @@ import {TodolistPropsType} from './types';
 
 export const Todolist: React.NamedExoticComponent<TodolistPropsType> = memo(
   props => {
-    const {title, navigation, todoListId, openEditMenu, filter} = props;
+    const {title, navigation, todoListId, openEditMenu} = props;
 
     const handlePress = () => {
-      navigation.navigate('Tasks', {todoListId, title, filter});
+      navigation.navigate('Tasks', {todoListId, title});
     };
 
     const handleLongPress = () => {
