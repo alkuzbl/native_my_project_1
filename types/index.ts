@@ -4,6 +4,7 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {FilterType} from '../redux/types';
 
 declare global {
   namespace ReactNavigation {
@@ -13,7 +14,7 @@ declare global {
 
 export type RootStackParamList = {
   TodoLists: NavigatorScreenParams<RootTabParamList> | undefined;
-  Tasks: {todoListId: string; title: string};
+  Tasks: {todoListId: string; title: string; filter: FilterType};
   Modal: undefined;
 };
 

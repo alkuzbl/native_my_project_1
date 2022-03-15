@@ -72,6 +72,7 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
     <Todolist
       title={item.title}
       todoListId={item.id}
+      filter={item.filter}
       navigation={navigation}
       openEditMenu={openEditMenu}
     />
