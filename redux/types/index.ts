@@ -65,7 +65,18 @@ export type ModalType<T> = {
   modalData: T;
 };
 
-export type AuthDataType = {
+export type InitialStateAuthType = {
+  messages: string | undefined;
+  isAuth: boolean;
+  user: UserType;
+};
+export type UserType = {
+  id: number;
+  email: string;
+  login: string;
+};
+
+export type AuthRequestDataType = {
   email: string;
   password: string;
   rememberMe: boolean;

@@ -27,3 +27,5 @@ export {
   setStatusApp,
   setMessageApp,
 } from './app.slice';
+
+export {authReducer} from './auth-slice';

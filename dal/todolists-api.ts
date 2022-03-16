@@ -1,7 +1,7 @@
 import {instance} from './axios-instance';
 
 export const todolistAPI = {
-  getTodolists: () => instance.get('todo-lists'),
+  fetchTodoLists: () => instance.get('todo-lists'),
 
   createTodolist: (title: string) => instance.post('todo-lists', {title}),
 

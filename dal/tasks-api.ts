@@ -2,7 +2,7 @@ import {instance} from './axios-instance';
 import {ModelTaskType} from './types';
 
 export const tasksAPI = {
-  getTasks: (id: string, count: number, page: number) =>
+  fetchTasks: (id: string, count: number, page: number) =>
     instance.get(`todo-lists/${id}/tasks/?count=${count}&page=${page}`),
 
   createTask: (id: string, title: string) =>

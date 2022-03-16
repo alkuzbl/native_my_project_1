@@ -1,7 +1,8 @@
 import {instance} from './axios-instance';
+import {AuthRequestDataType} from '../redux/types';
 
 export const authAPI = {
-  setLogin: (data: any) =>
+  setLogin: (data: AuthRequestDataType) =>
     instance.post<{
       resultCode: number;
       data: {userId: number};
