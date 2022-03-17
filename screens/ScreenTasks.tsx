@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   FlatList,
   ImageBackground,
@@ -20,14 +20,13 @@ import {InputText, TaskItem} from '../components';
 import {RootStackScreenProps} from '../types';
 import {globalStyles} from '../styles/globalStyles';
 import {
-  addTask,
-  removeTask,
   updateTask,
   closeModalTasks,
   setVisibleModalTasks,
-  updateTodoList,
+  updateFilterTodoList,
 } from '../redux/slices';
 import {ModalAction} from '../components/modal/ModalAction/ModalAction';
+import {fetchTasks, createTask, deleteTask} from '../redux/middleware';
 
 export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   const dispatch = useDispatch();
@@ -46,8 +45,8 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   );
 
   const addNewTask = useCallback(
-    (task: string) => {
-      dispatch(addTask({task, todoListId}));
+    (title: string) => {
+      dispatch(createTask({title, id: todoListId}));
     },
     [dispatch, todoListId],
   );
@@ -64,9 +63,9 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
     [closeEditMenu, dispatch, todoListId],
   );
 
-  const deleteTask = useCallback(
+  const removeTask = useCallback(
     (taskId: string) => {
-      dispatch(removeTask({todoListId, taskId}));
+      dispatch(deleteTask({todoListId, taskId}));
       closeEditMenu();
     },
     [closeEditMenu, dispatch, todoListId],
@@ -87,16 +86,20 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   );
 
   const handlePressAll = () =>
-    dispatch(updateTodoList({id: todoListId, filter: 'all'}));
+    dispatch(updateFilterTodoList({id: todoListId, filter: 'all'}));
 
   const handlePressActive = () =>
-    dispatch(updateTodoList({id: todoListId, filter: 'active'}));
+    dispatch(updateFilterTodoList({id: todoListId, filter: 'active'}));
 
   let filteredTasks = tasks;
 
   if (filter === 'active') {
     filteredTasks = filteredTasks.filter(task => !task.isDone);
   }
+
+  useEffect(() => {
+    dispatch(fetchTasks(todoListId));
+  }, []);
 
   const renderItem: ListRenderItem<TaskType> = ({item}) => (
     <TaskItem
@@ -149,7 +152,7 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
         itemId={modalData.taskId}
         closeModal={closeEditMenu}
         updateItem={updateTaskTitle}
-        deleteItem={deleteTask}
+        deleteItem={removeTask}
         isVisible={isVisible}
       />
     </View>

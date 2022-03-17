@@ -1,23 +1,35 @@
 import {instance} from './axios-instance';
-import {ModelTaskType} from './types';
+import {ModelTaskType, ResponseAPIType, ResponseTaskAPIType} from './types';
+import {TaskType} from '../redux/types';
 
 export const tasksAPI = {
-  fetchTasks: (id: string, count: number, page: number) =>
-    instance.get(`todo-lists/${id}/tasks/?count=${count}&page=${page}`),
+  fetchTasks: (id: string) =>
+    instance.get<ResponseTaskAPIType>(`todo-lists/${id}/tasks/`),
 
-  createTask: (id: string, title: string) =>
-    instance.post(`todo-lists/${id}/tasks`, {
-      title,
-    }),
+  createTask: (data: {id: string; title: string}) =>
+    instance.post<ResponseAPIType<{item: TaskType}>>(
+      `todo-lists/${data.id}/tasks`,
+      {
+        title: data.title,
+      },
+    ),
 
-  updateTask: (todolistId: string, taskId: string, model: ModelTaskType) =>
-    instance.put(`todo-lists/${todolistId}/tasks/${taskId}`, model),
+  updateTask: (todoListId: string, taskId: string, model: ModelTaskType) =>
+    instance.put<ResponseAPIType<{item: TaskType}>>(
+      `todo-lists/${todoListId}/tasks/${taskId}`,
+      model,
+    ),
 
-  removeTask: (todolistId: string, taskId: string) =>
-    instance.delete(`todo-lists/${todolistId}/tasks/${taskId}`),
+  deleteTask: (data: {todoListId: string; taskId: string}) =>
+    instance.delete<ResponseAPIType<{}>>(
+      `todo-lists/${data.todoListId}/tasks/${data.taskId}`,
+    ),
 
   reorderTask: (todolistId: string, taskId: string, putAfterItemId: string) =>
-    instance.put(`todo-lists/${todolistId}/tasks/${taskId}`, {
-      putAfterItemId,
-    }),
+    instance.put<ResponseAPIType<{}>>(
+      `todo-lists/${todolistId}/tasks/${taskId}`,
+      {
+        putAfterItemId,
+      },
+    ),
 };

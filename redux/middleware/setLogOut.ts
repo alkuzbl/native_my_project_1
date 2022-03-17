@@ -10,7 +10,7 @@ export const setLogOut = createAsyncThunk(
         return 'До скорой встречи';
       }
 
-      return rejectWithValue(response.data.data.messages[0]);
+      return rejectWithValue(response.data.messages[0]);
     } catch (err) {
       return rejectWithValue(['Что то пошло нет так, попробуйте еще', err]);
     }

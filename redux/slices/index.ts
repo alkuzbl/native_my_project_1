@@ -1,10 +1,8 @@
 export {
   todolistReducer,
-  removeTodoList,
   setMessageTodoLists,
-  updateTodoList,
   setStatusTodoLists,
-  addTodoList,
+  updateFilterTodoList,
   setVisibleModal,
   closeModal,
 } from './todolist.slice';

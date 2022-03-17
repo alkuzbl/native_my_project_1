@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 
 import {
   FlatList,
@@ -12,15 +12,13 @@ import {RootState} from '../redux/store';
 import {ModalDataTodoListType, ModalType, TodoListType} from '../redux/types';
 import {InputText, Todolist} from '../components';
 import {RootStackScreenProps} from '../types';
-import {
-  addTodoList,
-  removeTodoList,
-  updateTodoList,
-  closeModal,
-  setVisibleModal,
-} from '../redux/slices';
+import {closeModal, setVisibleModal} from '../redux/slices';
 import {globalStyles} from '../styles/globalStyles';
 import {ModalAction} from '../components/modal/ModalAction/ModalAction';
+import {fetchTodoLists} from '../redux/middleware/fetchTodoLists';
+import {createTodoList} from '../redux/middleware/createTodoList';
+import {deleteTotoList} from '../redux/middleware/deleteTotoList';
+import {updateTodoList} from '../redux/middleware/updateTodoList';
 
 export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
   const dispatch = useDispatch();
@@ -46,8 +44,9 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
 
   const addNewTodoList = useCallback(
     (title: string) => {
-      const todoListId = new Date().getTime().toString();
-      dispatch(addTodoList({todoListId, title}));
+      // const todoListId = new Date().getTime().toString();
+      // dispatch(addTodoList({todoListId, title}));
+      dispatch(createTodoList(title));
     },
     [dispatch],
   );
@@ -60,13 +59,18 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
     [closeModalWindow, dispatch],
   );
 
-  const deleteTodoList = useCallback(
+  const removeTodoList = useCallback(
     (todoListId: string) => {
-      dispatch(removeTodoList({todoListId}));
+      //dispatch(removeTodoList({todoListId}));
+      dispatch(deleteTotoList(todoListId));
       closeModalWindow();
     },
     [closeModalWindow, dispatch],
   );
+
+  useEffect(() => {
+    dispatch(fetchTodoLists());
+  }, []);
 
   const renderItem: ListRenderItem<TodoListType> = ({item}) => (
     <Todolist
@@ -99,7 +103,7 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
         closeModal={closeModalWindow}
         itemTitle={modalData.title || ''}
         itemId={modalData.todoListId}
-        deleteItem={deleteTodoList}
+        deleteItem={removeTodoList}
         updateItem={updateTitle}
       />
     </View>

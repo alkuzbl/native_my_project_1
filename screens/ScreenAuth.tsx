@@ -1,36 +1,25 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   ImageBackground,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {globalStyles} from '../styles/globalStyles';
 import {useDispatch} from 'react-redux';
 import {setLogin} from '../redux/middleware/setLogin';
+import {Form} from '../components/common/Form/Form';
+import {Input} from '../components/common/Input/Input';
+import {useForm} from 'react-hook-form';
 
 export const ScreenAuth = () => {
   const dispatch = useDispatch();
+  const {control, handleSubmit} = useForm();
 
-  const [email, setEmail] = useState<{email: string}>({email: ''});
-  const [password, setPassword] = useState<{password: string}>({password: ''});
-  // const [rememberMe, setRememberMe] = useState<{rememberMe: boolean}>({
-  //   rememberMe: false,
-  // });
-
-  const handleSubmit = () => {
-    dispatch(setLogin({...email, ...password, rememberMe: true}));
-    console.log({...email, ...password});
-    setEmail({email: ''});
-    setPassword({password: ''});
+  const onSubmit = (data: any) => {
+    dispatch(setLogin({...data, rememberMe: true}));
   };
-
-  const handleChangeEmailValue = (value: string) => setEmail({email: value});
-  const handleChangePasswordValue = (value: string) =>
-    setPassword({password: value});
-  // const handleChangeCheckBox = () => {};
 
   return (
     <View style={globalStyles.container}>
@@ -41,32 +30,49 @@ export const ScreenAuth = () => {
           <View>
             <Text style={styles.title}>Список дел</Text>
           </View>
-          <View style={styles.inputBox}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChangeEmailValue}
-              value={email.email}
+          <Form defaultValues={{email: '', password: ''}}>
+            <Input
+              name="email"
+              control={control}
+              label="Email"
+              style={inputStyle}
             />
-          </View>
-          <View style={styles.inputBox}>
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={handleChangePasswordValue}
-              value={password.password}
-              autoComplete="password"
+            <Input
+              name="password"
+              control={control}
+              label="Password"
+              style={inputStyle}
               secureTextEntry
             />
-          </View>
-          <TouchableOpacity style={styles.buttonBox} onPress={handleSubmit}>
-            <Text style={styles.buttonTitle}>Sign in</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonBox}
+              onPress={handleSubmit(onSubmit)}>
+              <Text style={styles.buttonTitle}>Sign in</Text>
+            </TouchableOpacity>
+          </Form>
         </View>
       </ImageBackground>
     </View>
   );
 };
+
+const inputStyle = StyleSheet.create({
+  inputBox: {
+    width: '80%',
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  input: {
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    fontSize: 20,
+    backgroundColor: '#e1b764',
+    color: '#5e4131',
+  },
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -79,25 +85,13 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     fontSize: 30,
   },
-  inputBox: {
-    width: '80%',
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  input: {
-    backgroundColor: 'red',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    fontSize: 20,
-  },
   buttonBox: {
-    backgroundColor: 'red',
     width: '80%',
     paddingVertical: 15,
-    borderRadius: 8,
+    backgroundColor: '#d0923e',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#834D26FF',
   },
   buttonTitle: {
     fontSize: 24,

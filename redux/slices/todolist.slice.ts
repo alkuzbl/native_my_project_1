@@ -6,14 +6,16 @@ import {
   StatusType,
   TodoListType,
 } from '../types';
+import {fetchTodoLists} from '../middleware/fetchTodoLists';
+import {createTodoList} from '../middleware/createTodoList';
+import {updateTodoList} from '../middleware/updateTodoList';
+import {deleteTotoList} from '../middleware/deleteTotoList';
 
-const TODO_LISTS = 'todolist';
+export const TODO_LISTS = 'todolist';
 
 const initialStateTodolist: InitialStateTodolistType = {
   status: 'idle',
-  todoLists: [
-    {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
-  ],
+  todoLists: [] as TodoListType[],
   message: undefined,
   modal: {
     isVisible: false,
@@ -25,29 +27,10 @@ const slice = createSlice({
   name: TODO_LISTS,
   initialState: initialStateTodolist,
   reducers: {
-    addTodoList: (
-      state,
-      action: PayloadAction<{todoListId: string; title: string}>,
-    ) => {
-      const todoList: TodoListType = {
-        id: action.payload.todoListId,
-        title: action.payload.title,
-        filter: 'all',
-        order: 0,
-        addedDate: '',
-      };
-      state.todoLists.unshift(todoList);
-    },
-    removeTodoList: (state, action: PayloadAction<{todoListId: string}>) => {
-      state.todoLists = state.todoLists.filter(
-        todoList => todoList.id !== action.payload.todoListId,
-      );
-    },
-    updateTodoList: (
+    updateFilterTodoList: (
       state,
       action: PayloadAction<{
         id: string;
-        title?: string;
         filter?: FilterType;
       }>,
     ) => {
@@ -73,15 +56,59 @@ const slice = createSlice({
       state.modal = {isVisible: false, modalData: {} as ModalDataTodoListType};
     },
   },
+  extraReducers: builder => {
+    builder.addCase(fetchTodoLists.fulfilled, (state, action) => {
+      state.todoLists = action.payload;
+      state.status = 'succeed';
+    });
+    builder.addCase(
+      fetchTodoLists.rejected,
+      (state, action: PayloadAction<any>) => {
+        state.message = action.payload[0];
+        state.status = 'failed';
+      },
+    );
+    builder.addCase(createTodoList.fulfilled, (state, action) => {
+      state.todoLists.unshift({...action.payload, filter: 'all'});
+      state.status = 'succeed';
+    });
+    builder.addCase(createTodoList.rejected, (state, action) => {
+      // @ts-ignore
+      state.message = action.payload[0];
+      state.status = 'failed';
+    });
+    builder.addCase(updateTodoList.fulfilled, (state, action) => {
+      state.todoLists = state.todoLists.map(todoList =>
+        todoList.id === action.payload.id
+          ? {...todoList, ...action.payload}
+          : todoList,
+      );
+      state.status = 'succeed';
+    });
+    builder.addCase(updateTodoList.rejected, (state, action) => {
+      // @ts-ignore
+      state.message = action.payload[0];
+      state.status = 'failed';
+    });
+    builder.addCase(deleteTotoList.fulfilled, (state, action) => {
+      state.todoLists = state.todoLists.filter(
+        todoList => todoList.id !== action.payload.id,
+      );
+      state.status = 'succeed';
+    });
+    builder.addCase(deleteTotoList.rejected, (state, action) => {
+      // @ts-ignore
+      state.message = action.payload[0];
+      state.status = 'failed';
+    });
+  },
 });
 
 export const todolistReducer = slice.reducer;
 
 export const {
   setStatusTodoLists,
-  addTodoList,
-  updateTodoList,
-  removeTodoList,
+  updateFilterTodoList,
   setMessageTodoLists,
   setVisibleModal,
   closeModal,

@@ -1,11 +1,9 @@
 import {InitialStateTodolistType, ModalDataTodoListType} from '../../types';
 import {
-  addTodoList,
-  removeTodoList,
   setMessageTodoLists,
   setStatusTodoLists,
   todolistReducer,
-  updateTodoList,
+  updateFilterTodoList,
 } from '../todolist.slice';
 
 let previousState: InitialStateTodolistType;
@@ -24,57 +22,12 @@ beforeEach(() => {
   };
 });
 
-test('The todoList should be added', () => {
-  expect(
-    todolistReducer(
-      previousState,
-      addTodoList({title: 'Test title', todoListId: '77777'}),
-    ),
-  ).toEqual({
-    status: 'idle',
-    message: undefined,
-    todoLists: [
-      {
-        id: '77777',
-        title: 'Test title',
-        filter: 'all',
-        addedDate: '',
-        order: 0,
-      },
-      {id: '11', title: 'React-native', filter: 'all', addedDate: '', order: 0},
-    ],
-    modal: {
-      isVisible: false,
-      modalData: {} as ModalDataTodoListType,
-    },
-  });
-
-  expect(previousState.todoLists.length).toBe(1);
-});
-
-test('The todoList should be removed', () => {
-  expect(
-    todolistReducer(previousState, removeTodoList({todoListId: '11'})),
-  ).toEqual({
-    status: 'idle',
-    message: undefined,
-    todoLists: [],
-    modal: {
-      isVisible: false,
-      modalData: {} as ModalDataTodoListType,
-    },
-  });
-
-  expect(previousState.todoLists[0]).not.toBe(undefined);
-});
-
 test('The todoList should be updated', () => {
   expect(
     todolistReducer(
       previousState,
-      updateTodoList({
+      updateFilterTodoList({
         id: '11',
-        title: 'Update',
         filter: 'completed',
       }),
     ),
@@ -82,7 +35,13 @@ test('The todoList should be updated', () => {
     status: 'idle',
     message: undefined,
     todoLists: [
-      {id: '11', title: 'Update', filter: 'completed', addedDate: '', order: 0},
+      {
+        id: '11',
+        title: 'React-native',
+        filter: 'completed',
+        addedDate: '',
+        order: 0,
+      },
     ],
     modal: {
       isVisible: false,
