@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {InitialStateAuthType, UserType} from '../types';
+import {InitialStateAuthType, ProfileType, UserType} from '../types';
 import {setLogin} from '../middleware/setLogin';
 import {getAuthMe} from '../middleware/getAuthMe';
 import {setLogOut} from '../middleware/setLogOut';
@@ -8,6 +8,7 @@ const initialStateAuth: InitialStateAuthType = {
   messages: undefined,
   isAuth: false,
   user: {} as UserType,
+  profileData: {} as ProfileType,
 };
 
 const slice = createSlice({
@@ -16,7 +17,8 @@ const slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(setLogin.fulfilled, (state, action) => {
-      state.user.id = action.payload.userId;
+      state.user.id = action.payload.logInData.userId;
+      state.profileData = action.payload.profileData;
       state.isAuth = true;
     });
     builder.addCase(getAuthMe.fulfilled, (state, action) => {
@@ -31,6 +33,7 @@ const slice = createSlice({
     });
     builder.addCase(setLogOut.fulfilled, (state, action) => {
       state.user = {} as UserType;
+      state.profileData = {} as ProfileType;
       // @ts-ignore
       state.messages = action.payload;
       state.isAuth = false;

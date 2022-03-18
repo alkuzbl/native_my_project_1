@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {authAPI} from '../../dal/auth-api';
+import {authAPI, userApi} from '../../dal/auth-api';
 import {AuthRequestDataType} from '../types';
 import {setStatusApp} from '../slices';
 
@@ -12,7 +12,8 @@ export const setLogin = createAsyncThunk(
       const response = await authAPI.setLogin(data);
 
       if (response.data.resultCode === 0) {
-        return response.data.data;
+        const user = await userApi.getUser(response.data.data.userId);
+        return {logInData: response.data.data, profileData: user.data};
       }
 
       return rejectWithValue(response.data.messages[0]);

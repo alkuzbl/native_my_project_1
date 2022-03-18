@@ -16,6 +16,7 @@ export const updateTask = createAsyncThunk<
   {
     dispatch: AppDispatch;
     state: RootState;
+    rejectValue: string;
   }
 >(
   `${TASKS}/updateTask`,
@@ -70,7 +71,7 @@ export const updateTask = createAsyncThunk<
           taskStatus: 'failed',
         }),
       );
-      return rejectWithValue(['Что то пошло не так, попробуйте еще раз', err]);
+      return rejectWithValue('Что то пошло не так, попробуйте еще раз');
     }
   },
 );

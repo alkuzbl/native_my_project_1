@@ -111,7 +111,6 @@ const slice = createSlice({
       );
     });
     builder.addCase(updateTask.rejected, (state, action) => {
-      // @ts-ignore
       state.message = action.payload;
     });
   },

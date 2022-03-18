@@ -5,7 +5,7 @@ import {RootStackParamList, RootTabParamList} from '../types';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
-  ScreenSettings,
+  ScreenProfile,
   ScreenModal,
   ScreenTodoList,
   ScreenTasks,
@@ -81,7 +81,7 @@ const BottomTabNavigator = () => {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ScreenSettings}
+        component={ScreenProfile}
         options={{
           title: 'Профиль',
           tabBarIcon: () => <MaterialIcons name="account-box" size={30} />,
