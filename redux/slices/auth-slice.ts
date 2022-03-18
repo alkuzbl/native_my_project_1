@@ -20,12 +20,10 @@ const slice = createSlice({
       state.isAuth = true;
     });
     builder.addCase(getAuthMe.fulfilled, (state, action) => {
-      console.log('full');
       state.user = action.payload;
       state.isAuth = true;
     });
     builder.addCase(getAuthMe.rejected, (state, action) => {
-      console.log('rej');
       state.user = {} as UserType;
       // @ts-ignore
       state.messages = action.payload;

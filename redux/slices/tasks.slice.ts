@@ -5,6 +5,7 @@ import {
   createTodoList,
   deleteTask,
   fetchTasks,
+  updateTask,
 } from '../middleware';
 import {TASKS} from '../../constans';
 
@@ -22,25 +23,25 @@ const slice = createSlice({
   name: TASKS,
   initialState: initialStateTasks,
   reducers: {
-    updateTask: (
-      state,
-      action: PayloadAction<{
-        todoListId: string;
-        taskId: string;
-        updatedData: {
-          title?: string;
-          isDone?: boolean;
-        };
-      }>,
-    ) => {
-      state.tasks[action.payload.todoListId] = state.tasks[
-        action.payload.todoListId
-      ].map(task =>
-        task.id === action.payload.taskId
-          ? {...task, ...action.payload.updatedData}
-          : task,
-      );
-    },
+    // updateTask: (
+    //   state,
+    //   action: PayloadAction<{
+    //     todoListId: string;
+    //     taskId: string;
+    //     updatedData: {
+    //       title?: string;
+    //       isDone?: boolean;
+    //     };
+    //   }>,
+    // ) => {
+    //   state.tasks[action.payload.todoListId] = state.tasks[
+    //     action.payload.todoListId
+    //   ].map(task =>
+    //     task.id === action.payload.taskId
+    //       ? {...task, ...action.payload.updatedData}
+    //       : task,
+    //   );
+    // },
     setStatusTask: (
       state,
       action: PayloadAction<{
@@ -81,10 +82,11 @@ const slice = createSlice({
       // @ts-ignore
       state.message = action.payload[0];
     });
+
     builder.addCase(createTodoList.fulfilled, (state, action) => {
       state.tasks[action.payload.id] = [];
-      console.log(state);
     });
+
     builder.addCase(createTask.fulfilled, (state, action) => {
       state.tasks[action.payload.todoListId].unshift(action.payload);
       state.status = 'succeed';
@@ -94,10 +96,23 @@ const slice = createSlice({
       state.message = action.payload;
       state.status = 'failed';
     });
+
     builder.addCase(deleteTask.fulfilled, (state, action) => {
       state.tasks[action.payload.todoListId] = state.tasks[
         action.payload.todoListId
       ].filter(task => task.id !== action.payload.taskId);
+    });
+
+    builder.addCase(updateTask.fulfilled, (state, action) => {
+      state.tasks[action.payload.todoListId] = state.tasks[
+        action.payload.todoListId
+      ].map(task =>
+        task.id === action.payload.id ? {...task, ...action.payload} : task,
+      );
+    });
+    builder.addCase(updateTask.rejected, (state, action) => {
+      // @ts-ignore
+      state.message = action.payload;
     });
   },
 });
@@ -105,7 +120,6 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer;
 
 export const {
-  updateTask,
   setStatusTask,
   setStatusTasks,
   setMessageTasks,

@@ -20,13 +20,18 @@ import {InputText, TaskItem} from '../components';
 import {RootStackScreenProps} from '../types';
 import {globalStyles} from '../styles/globalStyles';
 import {
-  updateTask,
   closeModalTasks,
   setVisibleModalTasks,
   updateFilterTodoList,
 } from '../redux/slices';
 import {ModalAction} from '../components/modal/ModalAction/ModalAction';
-import {fetchTasks, createTask, deleteTask} from '../redux/middleware';
+import {
+  createTask,
+  deleteTask,
+  fetchTasks,
+  updateTask,
+} from '../redux/middleware';
+import {TaskStatuses} from '../dal/types';
 
 export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   const dispatch = useDispatch();
@@ -57,7 +62,7 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
 
   const updateTaskTitle = useCallback(
     (title: string, taskId: string) => {
-      dispatch(updateTask({todoListId, taskId, updatedData: {title}}));
+      dispatch(updateTask({todoListId, taskId, model: {title}}));
       closeEditMenu();
     },
     [closeEditMenu, dispatch, todoListId],
@@ -80,7 +85,22 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
 
   const changeTaskStatus = useCallback(
     (isDone: boolean, taskId: string) => {
-      dispatch(updateTask({todoListId, taskId, updatedData: {isDone}}));
+      if (isDone) {
+        return dispatch(
+          updateTask({
+            taskId,
+            todoListId,
+            model: {status: TaskStatuses.Completed},
+          }),
+        );
+      }
+      dispatch(
+        updateTask({
+          taskId,
+          todoListId,
+          model: {status: TaskStatuses.New},
+        }),
+      );
     },
     [dispatch, todoListId],
   );
@@ -91,21 +111,23 @@ export const ScreenTasks = ({route}: RootStackScreenProps<'Tasks'>) => {
   const handlePressActive = () =>
     dispatch(updateFilterTodoList({id: todoListId, filter: 'active'}));
 
+  useEffect(() => {
+    dispatch(fetchTasks(todoListId));
+  }, [dispatch, todoListId]);
+
   let filteredTasks = tasks;
 
   if (filter === 'active') {
-    filteredTasks = filteredTasks.filter(task => !task.isDone);
+    filteredTasks = filteredTasks.filter(
+      task => task.status === TaskStatuses.New,
+    );
   }
-
-  useEffect(() => {
-    dispatch(fetchTasks(todoListId));
-  }, []);
 
   const renderItem: ListRenderItem<TaskType> = ({item}) => (
     <TaskItem
       title={item.title}
       id={item.id}
-      isDone={item.isDone}
+      isDone={item.status === TaskStatuses.Completed}
       changeStatus={changeTaskStatus}
       openEditMenu={openEditMenu}
     />

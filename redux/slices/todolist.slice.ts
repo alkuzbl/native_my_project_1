@@ -57,10 +57,16 @@ const slice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchTodoLists.fulfilled, (state, action) => {
-      state.todoLists = action.payload;
-      state.status = 'succeed';
-    });
+    builder.addCase(
+      fetchTodoLists.fulfilled,
+      (state, action: PayloadAction<TodoListType[]>) => {
+        state.todoLists = action.payload.map(item => ({
+          ...item,
+          filter: 'all',
+        }));
+        state.status = 'succeed';
+      },
+    );
     builder.addCase(
       fetchTodoLists.rejected,
       (state, action: PayloadAction<any>) => {

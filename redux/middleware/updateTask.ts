@@ -2,13 +2,17 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {TASKS} from '../../constans';
 import {tasksAPI} from '../../dal/tasks-api';
 import {setStatusTask} from '../slices';
-import {ModelTaskType} from '../../dal/types';
+import {ModelTaskType, TaskStatuses} from '../../dal/types';
 import {TaskType} from '../../redux/types';
 import {AppDispatch, RootState} from '../../redux/store';
 
 export const updateTask = createAsyncThunk<
   TaskType,
-  {todoListId: string; taskId: string; model: ModelTaskType},
+  {
+    todoListId: string;
+    taskId: string;
+    model: {title?: string; status?: TaskStatuses};
+  },
   {
     dispatch: AppDispatch;
     state: RootState;
@@ -47,11 +51,25 @@ export const updateTask = createAsyncThunk<
       });
 
       if (response.data.resultCode === 0) {
-        return response.data.data.item;
+        return {...response.data.data.item, taskStatus: 'succeed'};
       }
+      dispatch(
+        setStatusTask({
+          taskId: data.taskId,
+          todoListId: data.todoListId,
+          taskStatus: 'failed',
+        }),
+      );
 
       return rejectWithValue(response.data.messages[0]);
     } catch (err) {
+      dispatch(
+        setStatusTask({
+          taskId: data.taskId,
+          todoListId: data.todoListId,
+          taskStatus: 'failed',
+        }),
+      );
       return rejectWithValue(['Что то пошло не так, попробуйте еще раз', err]);
     }
   },
