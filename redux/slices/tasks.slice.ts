@@ -23,25 +23,6 @@ const slice = createSlice({
   name: TASKS,
   initialState: initialStateTasks,
   reducers: {
-    // updateTask: (
-    //   state,
-    //   action: PayloadAction<{
-    //     todoListId: string;
-    //     taskId: string;
-    //     updatedData: {
-    //       title?: string;
-    //       isDone?: boolean;
-    //     };
-    //   }>,
-    // ) => {
-    //   state.tasks[action.payload.todoListId] = state.tasks[
-    //     action.payload.todoListId
-    //   ].map(task =>
-    //     task.id === action.payload.taskId
-    //       ? {...task, ...action.payload.updatedData}
-    //       : task,
-    //   );
-    // },
     setStatusTask: (
       state,
       action: PayloadAction<{
@@ -75,16 +56,18 @@ const slice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchTasks.fulfilled, (state, action) => {
-      state.tasks[action.payload.todoListId] = action.payload.data;
-    });
-    builder.addCase(fetchTasks.rejected, (state, action) => {
-      // @ts-ignore
-      state.message = action.payload[0];
-    });
-
     builder.addCase(createTodoList.fulfilled, (state, action) => {
       state.tasks[action.payload.id] = [];
+      state.status = 'succeed';
+    });
+
+    builder.addCase(fetchTasks.fulfilled, (state, action) => {
+      state.tasks[action.payload.todoListId] = action.payload.data;
+      state.status = 'succeed';
+    });
+    builder.addCase(fetchTasks.rejected, (state, action) => {
+      state.message = action.payload;
+      state.status = 'succeed';
     });
 
     builder.addCase(createTask.fulfilled, (state, action) => {
@@ -92,7 +75,6 @@ const slice = createSlice({
       state.status = 'succeed';
     });
     builder.addCase(createTask.rejected, (state, action) => {
-      // @ts-ignore
       state.message = action.payload;
       state.status = 'failed';
     });
@@ -101,6 +83,9 @@ const slice = createSlice({
       state.tasks[action.payload.todoListId] = state.tasks[
         action.payload.todoListId
       ].filter(task => task.id !== action.payload.taskId);
+    });
+    builder.addCase(deleteTask.rejected, (state, action) => {
+      state.message = action.payload;
     });
 
     builder.addCase(updateTask.fulfilled, (state, action) => {

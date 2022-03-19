@@ -1,8 +1,17 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {setStatusTodoLists, TODO_LISTS} from '../slices/todolist.slice';
 import {todolistAPI} from '../../dal/todolists-api';
+import {AppDispatch, RootState} from 'redux/store';
 
-export const deleteTotoList = createAsyncThunk(
+export const deleteTotoList = createAsyncThunk<
+  {id: string},
+  string,
+  {
+    dispatch: AppDispatch;
+    rejectValue: string;
+    state: RootState;
+  }
+>(
   `${TODO_LISTS}/deleteTodoList`,
   async (id: string, {rejectWithValue, dispatch}) => {
     dispatch(setStatusTodoLists({status: 'loading'}));
@@ -13,9 +22,9 @@ export const deleteTotoList = createAsyncThunk(
         return {id};
       }
 
-      return rejectWithValue(response.data.messages);
+      return rejectWithValue(response.data.messages[0]);
     } catch (err) {
-      return rejectWithValue(['Что то пошло не так, попробуйте еще раз', err]);
+      return rejectWithValue('Что то пошло не так, попробуйте еще раз');
     }
   },
 );

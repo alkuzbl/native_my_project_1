@@ -28,7 +28,7 @@ export const updateTask = createAsyncThunk<
         taskStatus: 'loading',
       }),
     );
-    let model: ModelTaskType;
+    let model = {} as ModelTaskType;
 
     const task = getState().tasks.tasks[data.todoListId].find(
       item => item.id === data.taskId,
@@ -47,7 +47,7 @@ export const updateTask = createAsyncThunk<
 
     try {
       const response = await tasksAPI.updateTask(data.todoListId, data.taskId, {
-        ...model!, //пофиксить
+        ...model,
         ...data.model,
       });
 

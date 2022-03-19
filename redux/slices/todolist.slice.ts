@@ -6,10 +6,12 @@ import {
   StatusType,
   TodoListType,
 } from '../types';
-import {fetchTodoLists} from '../middleware/fetchTodoLists';
-import {createTodoList} from '../middleware/createTodoList';
-import {updateTodoList} from '../middleware/updateTodoList';
-import {deleteTotoList} from '../middleware/deleteTotoList';
+import {
+  fetchTodoLists,
+  createTodoList,
+  updateTodoList,
+  deleteTotoList,
+} from '../middleware';
 
 export const TODO_LISTS = 'todolist';
 
@@ -70,7 +72,7 @@ const slice = createSlice({
     builder.addCase(
       fetchTodoLists.rejected,
       (state, action: PayloadAction<any>) => {
-        state.message = action.payload[0];
+        state.message = action.payload;
         state.status = 'failed';
       },
     );
@@ -79,8 +81,7 @@ const slice = createSlice({
       state.status = 'succeed';
     });
     builder.addCase(createTodoList.rejected, (state, action) => {
-      // @ts-ignore
-      state.message = action.payload[0];
+      state.message = action.payload;
       state.status = 'failed';
     });
     builder.addCase(updateTodoList.fulfilled, (state, action) => {
@@ -92,8 +93,7 @@ const slice = createSlice({
       state.status = 'succeed';
     });
     builder.addCase(updateTodoList.rejected, (state, action) => {
-      // @ts-ignore
-      state.message = action.payload[0];
+      state.message = action.payload;
       state.status = 'failed';
     });
     builder.addCase(deleteTotoList.fulfilled, (state, action) => {
@@ -103,8 +103,7 @@ const slice = createSlice({
       state.status = 'succeed';
     });
     builder.addCase(deleteTotoList.rejected, (state, action) => {
-      // @ts-ignore
-      state.message = action.payload[0];
+      state.message = action.payload;
       state.status = 'failed';
     });
   },
