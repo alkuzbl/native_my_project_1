@@ -44,8 +44,6 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
 
   const addNewTodoList = useCallback(
     (title: string) => {
-      // const todoListId = new Date().getTime().toString();
-      // dispatch(addTodoList({todoListId, title}));
       dispatch(createTodoList(title));
     },
     [dispatch],
@@ -61,7 +59,6 @@ export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
 
   const removeTodoList = useCallback(
     (todoListId: string) => {
-      //dispatch(removeTodoList({todoListId}));
       dispatch(deleteTotoList(todoListId));
       closeModalWindow();
     },

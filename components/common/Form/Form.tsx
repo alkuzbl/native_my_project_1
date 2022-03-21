@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {FC} from 'react';
 import {useForm} from 'react-hook-form';
+import {IFormInputs} from '../../../screens/ScreenAuth';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 type FormPropsType = {
   defaultValues: any;
@@ -9,7 +11,9 @@ type FormPropsType = {
 
 export const Form: FC<FormPropsType> = props => {
   const {defaultValues, children} = props;
-  const methods = useForm({defaultValues});
+  const {register} = useForm<IFormInputs>({
+    resolver: yupResolver(defaultValues),
+  });
 
   return (
     <>
@@ -18,7 +22,7 @@ export const Form: FC<FormPropsType> = props => {
           ? React.createElement(child.type, {
               ...{
                 ...child.props,
-                register: methods.register,
+                register,
                 key: child.props.name,
               },
               blurOnSubmit: false,

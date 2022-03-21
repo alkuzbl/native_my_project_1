@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   ImageBackground,
   StyleSheet,
@@ -12,6 +13,11 @@ import {setLogin} from '../redux/middleware/setLogin';
 import {Form} from '../components/common/Form/Form';
 import {Input} from '../components/common/Input/Input';
 import {useForm} from 'react-hook-form';
+
+export type IFormInputs = {
+  email: string;
+  password: string;
+};
 
 export const ScreenAuth = () => {
   const dispatch = useDispatch();

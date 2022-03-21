@@ -14,12 +14,13 @@ export type InputPropsType = {
   name: string;
   label?: string;
   control: any;
-  error?: any;
   style?: StyleType;
   secureTextEntry?: boolean;
 };
+
 export const Input: FC<InputPropsType> = props => {
-  const {control, name, label, error, style, secureTextEntry} = props;
+  const {control, name, label, style, secureTextEntry} = props;
+
   const {field} = useController({control, name});
 
   return (
@@ -28,10 +29,10 @@ export const Input: FC<InputPropsType> = props => {
       <TextInput
         value={field.value}
         onChangeText={field.onChange}
+        onBlur={field.onBlur}
         style={style ? style.input : {}}
         secureTextEntry={secureTextEntry}
       />
-      {error && <Text style={style ? style.error : {}}>{error}</Text>}
     </View>
   );
 };
