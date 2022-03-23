@@ -21,7 +21,11 @@ export type IFormInputs = {
 
 export const ScreenAuth = () => {
   const dispatch = useDispatch();
-  const {control, handleSubmit} = useForm();
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
 
   const onSubmit = (data: any) => {
     dispatch(setLogin({...data, rememberMe: true}));
@@ -42,13 +46,16 @@ export const ScreenAuth = () => {
               control={control}
               label="Email"
               style={inputStyle}
+              errors={errors}
             />
+
             <Input
               name="password"
               control={control}
               label="Password"
               style={inputStyle}
               secureTextEntry
+              errors={errors}
             />
             <TouchableOpacity
               style={styles.buttonBox}
@@ -77,6 +84,11 @@ const inputStyle = StyleSheet.create({
     fontSize: 20,
     backgroundColor: '#e1b764',
     color: '#5e4131',
+  },
+  error: {
+    color: 'red',
+    fontWeight: '800',
+    fontSize: 18,
   },
 });
 
