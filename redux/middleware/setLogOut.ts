@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {authAPI} from '../../dal/auth-api';
 
-export const setLogOut = createAsyncThunk(
+export const setLogOut = createAsyncThunk<any, void, {rejectValue: string}>(
   'auth/setLogOut',
   async (_, {rejectWithValue}) => {
     try {
@@ -12,7 +12,7 @@ export const setLogOut = createAsyncThunk(
 
       return rejectWithValue(response.data.messages[0]);
     } catch (err) {
-      return rejectWithValue(['Что то пошло нет так, попробуйте еще', err]);
+      return rejectWithValue('Что то пошло нет так, попробуйте еще');
     }
   },
 );

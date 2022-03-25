@@ -14,11 +14,13 @@ import {InputText, Todolist} from '../components';
 import {RootStackScreenProps} from '../types';
 import {closeModal, setVisibleModal} from '../redux/slices';
 import {globalStyles} from '../styles/globalStyles';
-import {ModalAction} from '../components/modal/ModalAction/ModalAction';
-import {fetchTodoLists} from '../redux/middleware/fetchTodoLists';
-import {createTodoList} from '../redux/middleware/createTodoList';
-import {deleteTotoList} from '../redux/middleware/deleteTotoList';
-import {updateTodoList} from '../redux/middleware/updateTodoList';
+import {ModalAction} from '../components';
+import {
+  fetchTodoLists,
+  createTodoList,
+  deleteTotoList,
+  updateTodoList,
+} from '../redux/middleware';
 
 export const ScreenTodoList = ({navigation}: RootStackScreenProps<'Tasks'>) => {
   const dispatch = useDispatch();

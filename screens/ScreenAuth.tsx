@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
   ImageBackground,
@@ -8,11 +8,12 @@ import {
   View,
 } from 'react-native';
 import {globalStyles} from '../styles/globalStyles';
-import {useDispatch} from 'react-redux';
-import {setLogin} from '../redux/middleware/setLogin';
-import {Form} from '../components/common/Form/Form';
-import {Input} from '../components/common/Input/Input';
+import {useDispatch, useSelector} from 'react-redux';
+import {setLogin} from '../redux/middleware';
+import {Form, Input, ModalMessage} from '../components';
 import {useForm} from 'react-hook-form';
+import {RootState} from '../redux/store';
+import {clearMessages} from '../redux/slices/auth-slice';
 
 export type IFormInputs = {
   email: string;
@@ -27,9 +28,20 @@ export const ScreenAuth = () => {
     formState: {errors},
   } = useForm();
 
+  const error = useSelector<RootState, string | undefined>(
+    state => state.auth.messages,
+  );
+  console.log(error);
+
   const onSubmit = (data: any) => {
     dispatch(setLogin({...data, rememberMe: true}));
   };
+
+  useEffect(() => {
+    const timerId = setTimeout(() => dispatch(clearMessages()), 3000);
+
+    return () => clearTimeout(timerId);
+  }, [error]);
 
   return (
     <View style={globalStyles.container}>
@@ -57,6 +69,7 @@ export const ScreenAuth = () => {
               secureTextEntry
               errors={errors}
             />
+
             <TouchableOpacity
               style={styles.buttonBox}
               onPress={handleSubmit(onSubmit)}>
@@ -64,6 +77,7 @@ export const ScreenAuth = () => {
             </TouchableOpacity>
           </Form>
         </View>
+        <ModalMessage message={error} />
       </ImageBackground>
     </View>
   );
