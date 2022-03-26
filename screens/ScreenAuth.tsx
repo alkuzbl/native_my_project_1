@@ -37,6 +37,8 @@ export const ScreenAuth = () => {
     dispatch(setLogin({...data, rememberMe: true}));
   };
 
+  const handlePressBackdrop = () => dispatch(clearMessages());
+
   useEffect(() => {
     const timerId = setTimeout(() => dispatch(clearMessages()), 3000);
 
@@ -77,7 +79,12 @@ export const ScreenAuth = () => {
             </TouchableOpacity>
           </Form>
         </View>
-        <ModalMessage message={error} />
+        <ModalMessage
+          message={error}
+          onBackdropPress={handlePressBackdrop}
+          animationTiming={500}
+          backdropTiming={2000}
+        />
       </ImageBackground>
     </View>
   );
